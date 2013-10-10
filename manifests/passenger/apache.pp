@@ -31,27 +31,6 @@ class rvm::passenger::apache(
   $gempath = "${rvm_prefix}/rvm/gems/${ruby_version}/gems"
   $binpath = "${rvm_prefix}/rvm/bin/"
 
-  # exclude passenger for $apache::mod_packages
-  class { '::apache':
-    mod_packages => {
-      'auth_kerb'  => 'mod_auth_kerb',
-      'fcgid'      => 'mod_fcgid',
-      'perl'       => 'mod_perl',
-      'php5'       => $distrelease ? {
-        '5'     => 'php53',
-        default => 'php',
-      },
-      'proxy_html' => 'mod_proxy_html',
-      'python'     => 'mod_python',
-      'shibboleth' => 'shibboleth',
-      'ssl'        => 'mod_ssl',
-      'wsgi'       => 'mod_wsgi',
-      'dav_svn'    => 'mod_dav_svn',
-      'suphp'      => 'mod_suphp',
-      'xsendfile'  => 'mod_xsendfile',
-    },
-  }
-
   class { 'apache::mod::passenger':
     passenger_root           => "${gempath}/passenger-${version}",
     passenger_ruby           => "${rvm_prefix}/rvm/wrappers/${ruby_version}/ruby",
