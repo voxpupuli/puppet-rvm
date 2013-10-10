@@ -1,18 +1,11 @@
 class rvm::passenger::apache(
   $ruby_version,
   $version,
-  $rvm_prefix = '/usr/local/',
+  $rvm_prefix = '/usr/local',
   $mininstances = '1',
   $maxpoolsize = '6',
-  $poolidletime = '300',
-  $maxinstancesperapp = '0',
-  $spawnmethod = 'smart-lv2'
+  $poolidletime = '300'
 ) {
-
-  case $::operatingsystem {
-    Ubuntu,Debian: { include rvm::passenger::apache::ubuntu::pre }
-    CentOS,RedHat,Scientific: { include rvm::passenger::apache::centos::pre }
-  }
 
   class {
     'rvm::passenger::gem':
@@ -23,41 +16,14 @@ class rvm::passenger::apache(
   # TODO: How can we get the gempath automatically using the ruby version
   # Can we read the output of a command into a variable?
   # e.g. $gempath = `usr/local/rvm/bin/rvm ${ruby_version} exec rvm gemdir`
-  $gempath = "${rvm_prefix}rvm/gems/${ruby_version}/gems"
-  $binpath = "${rvm_prefix}rvm/bin/"
+  $gempath = "${rvm_prefix}/rvm/gems/${ruby_version}/gems"
+  $binpath = "${rvm_prefix}/rvm/bin/"
 
-  case $::operatingsystem {
-    Ubuntu,Debian: {
-      if !defined(Class['rvm::passenger::apache::ubuntu::post']) {
-        class { 'rvm::passenger::apache::ubuntu::post':
-          ruby_version       => $ruby_version,
-          version            => $version,
-          rvm_prefix         => $rvm_prefix,
-          mininstances       => $mininstances,
-          maxpoolsize        => $maxpoolsize,
-          poolidletime       => $poolidletime,
-          maxinstancesperapp => $maxinstancesperapp,
-          spawnmethod        => $spawnmethod,
-          gempath            => $gempath,
-          binpath            => $binpath;
-        }
-      }
-    }
-    CentOS,RedHat,Scientific: {
-      if !defined(Class['rvm::passenger::apache::centos::post']) {
-        class { 'rvm::passenger::apache::centos::post':
-          ruby_version       => $ruby_version,
-          version            => $version,
-          rvm_prefix         => $rvm_prefix,
-          mininstances       => $mininstances,
-          maxpoolsize        => $maxpoolsize,
-          poolidletime       => $poolidletime,
-          maxinstancesperapp => $maxinstancesperapp,
-          spawnmethod        => $spawnmethod,
-          gempath            => $gempath,
-          binpath            => $binpath;
-        }
-      }
-    }
+  include apache
+  class { 'apache::mod::passenger':
+    passenger_root           => "${gempath}/passenger-${version}",
+    passenger_ruby           => "${rvm_prefix}/rvm/wrappers/${ruby_version}/ruby",
+    passenger_max_pool_size  => $maxpoolsize,
+    passenger_pool_idle_time => $poolidletime,
   }
 }
