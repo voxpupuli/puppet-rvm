@@ -32,7 +32,7 @@ class rvm::passenger::apache(
   $binpath = "${rvm_prefix}/rvm/bin/"
 
   # exclude passenger for $apache::mod_packages
-  class { 'apache':
+  class { '::apache':
     mod_packages => {
       'auth_kerb'  => 'mod_auth_kerb',
       'fcgid'      => 'mod_fcgid',
