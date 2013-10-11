@@ -30,11 +30,15 @@ class rvm::passenger::apache(
   # e.g. $gempath = `usr/local/rvm/bin/rvm ${ruby_version} exec rvm gemdir`
   $gempath = "${rvm_prefix}/rvm/gems/${ruby_version}/gems"
   $binpath = "${rvm_prefix}/rvm/bin/"
+  $gemroot = "${gempath}/passenger-${version}"
+  $modpath = "${gemroot}/${objdir}/apache2"
 
   class { 'apache::mod::passenger':
-    passenger_root           => "${gempath}/passenger-${version}",
+    passenger_root           => $gemroot,
     passenger_ruby           => "${rvm_prefix}/rvm/wrappers/${ruby_version}/ruby",
     passenger_max_pool_size  => $maxpoolsize,
     passenger_pool_idle_time => $poolidletime,
+    passenger_lib_dir        => $modpath,
+    passenger_manage_package => false,
   }
 }
