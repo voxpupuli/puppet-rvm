@@ -38,7 +38,7 @@ class rvm::passenger::apache(
     passenger_ruby           => "${rvm_prefix}/rvm/wrappers/${ruby_version}/ruby",
     passenger_max_pool_size  => $maxpoolsize,
     passenger_pool_idle_time => $poolidletime,
-    passenger_lib_dir        => $modpath,
+    passenger_lib_path       => $modpath,
     passenger_manage_package => false,
   }
 }
