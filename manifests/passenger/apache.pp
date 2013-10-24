@@ -34,12 +34,13 @@ class rvm::passenger::apache(
   $modpath = "${gemroot}/${objdir}/apache2"
 
   # build the Apache module
+  include apache::dev
   exec { 'passenger-install-apache2-module':
     command     => "${rvm::passenger::apache::binpath}rvm ${rvm::passenger::apache::ruby_version} exec passenger-install-apache2-module -a",
     creates     => "${rvm::passenger::apache::modpath}/mod_passenger.so",
     environment => [ 'HOME=/root', ],
     logoutput   => 'on_failure',
-    require     => Class['rvm::passenger::gem'],
+    require     => Class['rvm::passenger::gem','apache::dev'],
   }
 
   class { 'apache::mod::passenger':
