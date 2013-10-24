@@ -33,6 +33,15 @@ class rvm::passenger::apache(
   $gemroot = "${gempath}/passenger-${version}"
   $modpath = "${gemroot}/${objdir}/apache2"
 
+  # build the Apache module
+  exec { 'passenger-install-apache2-module':
+    command     => "${rvm::passenger::apache::binpath}rvm ${rvm::passenger::apache::ruby_version} exec passenger-install-apache2-module -a",
+    creates     => "${rvm::passenger::apache::modpath}/mod_passenger.so",
+    environment => [ 'HOME=/root', ],
+    logoutput   => 'on_failure',
+    require     => Class['rvm::passenger::gem'],
+  }
+
   class { 'apache::mod::passenger':
     passenger_root           => $gemroot,
     passenger_ruby           => "${rvm_prefix}/rvm/wrappers/${ruby_version}/ruby",
@@ -40,5 +49,7 @@ class rvm::passenger::apache(
     passenger_pool_idle_time => $poolidletime,
     passenger_lib_path       => $modpath,
     passenger_manage_package => false,
+    require                  => Exec['passenger-install-apache2-module'],
+    subscribe                => Exec['passenger-install-apache2-module'],
   }
 }
