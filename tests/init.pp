@@ -1,4 +1,16 @@
-stage { 'epel': before => Stage['rvm-install'] }
+case $::operatingsystem {
 
-class { 'epel': stage => 'epel' } ->
+  Ubuntu,Debian: {}
+
+  CentOS,RedHat,Fedora,rhel,Amazon,Scientific: {
+    class { 'epel':
+      before => Class['rvm'],
+    }
+  }
+
+  OracleLinux: {}
+
+  default: {}
+}
+
 class { 'rvm': }
