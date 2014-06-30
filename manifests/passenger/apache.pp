@@ -24,6 +24,13 @@ class rvm::passenger::apache(
   $binpath = "${rvm_prefix}/rvm/bin/"
   $gemroot = "${gempath}/passenger-${version}"
 
+  # TODO: find out wich version build the module in wich path
+  # 4.0.40 : uses buildout
+  case $version {
+    '4.0.40' : {$mod_passenger_path = "${gemroot}/buildout/apache2/mod_passenger.so"}
+    default  : {$mod_passenger_path = "${gemroot}/buildout/apache2/mod_passenger.so"}
+  }
+
   # build the Apache module
   # different passenger versions put the built module in different places (ext, libout, buildout)
   include apache::dev
@@ -46,5 +53,6 @@ class rvm::passenger::apache(
     passenger_pool_idle_time => $poolidletime,
     require                  => Exec['passenger-install-apache2-module'],
     subscribe                => Exec['passenger-install-apache2-module'],
+    mod_path                 => $mod_passenger_path
   }
 }

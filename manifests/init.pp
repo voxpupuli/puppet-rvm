@@ -24,5 +24,7 @@ class rvm(
   }
 
   rvm::system_user{ $system_users: }
+
   create_resources('rvm_system_ruby', $system_rubies, {'ensure' => present, 'proxy_url' => $proxy_url})
+
 }
