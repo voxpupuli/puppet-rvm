@@ -5,7 +5,8 @@ class rvm(
   $install_dependencies=false,
   $system_users=[],
   $system_rubies={},
-  $proxy_url=$rvm::params::proxy_url) inherits rvm::params {
+  $proxy_url=$rvm::params::proxy_url
+  ) inherits rvm::params {
 
   if $install_rvm {
 
@@ -20,7 +21,7 @@ class rvm(
 
     class { 'rvm::system':
       version   => $version,
-      proxy_url => $proxy_url,
+      proxy_url => $proxy_url
     }
   }
 

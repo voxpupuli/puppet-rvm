@@ -1,7 +1,10 @@
+
 # Install the RVM system
 class rvm::system(
   $version=undef,
   $proxy_url=undef) {
+
+  class {'rvm::gpg':}
 
   $actual_version = $version ? {
     undef     => 'latest',
@@ -25,11 +28,13 @@ class rvm::system(
     default => [ "http_proxy=${proxy_url}" , "https_proxy=${proxy_url}" ],
   }
 
+
   exec { 'system-rvm-gpg-key':
     command     => 'gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3',
     path        => $::path,
     environment => 'HOME=/root',
     unless      => 'gpg2 --list-keys D39DC0E3',
+    require     => Class['::rvm::gpg']
   } ->
 
   exec { 'system-rvm':
