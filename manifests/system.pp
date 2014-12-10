@@ -23,8 +23,8 @@ class rvm::system(
   }
 
   $proxy_environment = $proxy_url ? {
-    undef   => undef,
-    default => [ "http_proxy=${proxy_url}" , "https_proxy=${proxy_url}" ],
+    undef   => 'HOME=/root',
+    default => [ "http_proxy=${proxy_url}" , "https_proxy=${proxy_url}", 'HOME=/root' ],
   }
 
   exec { 'system-rvm-gpg-key':
