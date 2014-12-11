@@ -22,9 +22,9 @@ class rvm::system(
     }
   }
 
-  $proxy_environment = $proxy_url ? {
-    undef   => undef,
-    default => [ "http_proxy=${proxy_url}" , "https_proxy=${proxy_url}" ],
+  $environment = $proxy_url ? {
+    undef   => [ 'HOME=/root' ],
+    default => [ 'HOME=/root', "http_proxy=${proxy_url}" , "https_proxy=${proxy_url}" ],
   }
 
   exec { 'system-rvm-gpg-key':
@@ -39,7 +39,7 @@ class rvm::system(
     path        => '/usr/bin:/usr/sbin:/bin',
     command     => "/usr/bin/curl -fsSL https://get.rvm.io | bash -s -- --version ${actual_version}",
     creates     => '/usr/local/rvm/bin/rvm',
-    environment => $proxy_environment,
+    environment => $environment,
   }
 
   # the fact won't work until rvm is installed before puppet starts
@@ -48,13 +48,13 @@ class rvm::system(
       # Update the rvm installation to the version specified
       notify { 'rvm-get_version':
         message => "RVM updating from version ${::rvm_version} to ${version}",
-      }
+      } ->
       exec { 'system-rvm-get':
         path        => '/usr/local/rvm/bin:/usr/bin:/usr/sbin:/bin',
         command     => "rvm get ${version}",
         before      => Exec['system-rvm'], # so it doesn't run after being installed the first time
-        environment => $proxy_environment,
-        require     => Notify['rvm-get_version'],
+        environment => $environment,
+        require     => Exec['system-rvm-gpg-key'],
       }
     }
   }
