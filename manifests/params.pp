@@ -10,6 +10,7 @@ class rvm::params($manage_group = true) {
 
   $gpg_package = $::osfamily ? {
     /(Debian|RedHat)/ => 'gnupg2',
-    default => undef,
+    /Darwin/          => 'gnupg2',
+    default           => undef,
   }
 }
