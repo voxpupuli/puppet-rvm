@@ -1,12 +1,11 @@
 # Install the RVM system
 class rvm::system(
-  $version=undef,
-  $proxy_url=undef,
-  $no_proxy=undef,
-  $home=$::root_home
-  $gpg_key='409B6B1796C275462A1703113804BB82D39DC0E3') {
-
-  class {'rvm::gpg':}
+  $version = undef,
+  $proxy_url = undef,
+  $no_proxy = undef,
+  $home = $::root_home
+  $manage_gpg = $rvm::params::manage_gpg,
+  $gpg_key = $rvm::params::gpg_key) inherits rvm::params {
 
   $actual_version = $version ? {
     undef     => 'latest',
@@ -36,13 +35,16 @@ class rvm::system(
   $proxy_environment = concat($http_proxy_environment, $no_proxy_environment)
   $environment = concat($proxy_environment, ["HOME=${home}"])
 
-  exec { 'system-rvm-gpg-key':
-    command     => "gpg2 --keyserver hkp://keys.gnupg.net --recv-keys ${gpg_key}",
-    path        => $::path,
-    environment => $environment,
-    unless      => "gpg2 --list-keys ${gpg_key}",
-    require     => Class['::rvm::gpg']
-  } ->
+  if $manage_gpg {
+    class { 'rvm::gpg': } ->
+    exec { 'system-rvm-gpg-key':
+      command     => "gpg2 --keyserver hkp://keys.gnupg.net --recv-keys ${gpg_key}",
+      path        => $::path,
+      environment => $environment,
+      unless      => "gpg2 --list-keys ${gpg_key}",
+      before      => Exec['system-rvm']
+    }
+  }
 
   exec { 'system-rvm':
     path        => '/usr/bin:/usr/sbin:/bin',
@@ -63,8 +65,8 @@ class rvm::system(
         command     => "rvm get ${version}",
         before      => Exec['system-rvm'], # so it doesn't run after being installed the first time
         environment => $environment,
-        require     => Exec['system-rvm-gpg-key'],
       }
+      if $manage_gpg { Exec['system-rvm-get'] -> Exec['system-rvm-gpg-key'] }
     }
   }
 }
