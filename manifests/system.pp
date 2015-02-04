@@ -3,7 +3,7 @@ class rvm::system(
   $version = undef,
   $proxy_url = undef,
   $no_proxy = undef,
-  $home = $::root_home
+  $home = $::root_home,
   $manage_gpg = $rvm::params::manage_gpg,
   $gpg_key = $rvm::params::gpg_key) inherits rvm::params {
 
@@ -42,7 +42,7 @@ class rvm::system(
       path        => $::path,
       environment => $environment,
       unless      => "gpg2 --list-keys ${gpg_key}",
-      before      => Exec['system-rvm']
+      before      => Exec['system-rvm'],
     }
   }
 
