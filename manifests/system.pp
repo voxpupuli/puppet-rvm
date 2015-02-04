@@ -3,7 +3,8 @@ class rvm::system(
   $version=undef,
   $proxy_url=undef,
   $no_proxy=undef,
-  $home=$::root_home) {
+  $home=$::root_home
+  $gpg_key='409B6B1796C275462A1703113804BB82D39DC0E3') {
 
   class {'rvm::gpg':}
 
@@ -36,10 +37,10 @@ class rvm::system(
   $environment = concat($proxy_environment, ["HOME=${home}"])
 
   exec { 'system-rvm-gpg-key':
-    command     => 'gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3',
+    command     => "gpg2 --keyserver hkp://keys.gnupg.net --recv-keys ${gpg_key}",
     path        => $::path,
     environment => $environment,
-    unless      => 'gpg2 --list-keys D39DC0E3',
+    unless      => "gpg2 --list-keys ${gpg_key}",
     require     => Class['::rvm::gpg']
   } ->
 
