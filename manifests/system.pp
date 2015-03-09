@@ -40,6 +40,7 @@ class rvm::system(
     environment => $environment,
     unless      => 'which gpg && gpg --list-keys D39DC0E3',
     onlyif      => 'which gpg',
+    provider    => shell
   } ->
 
   exec { 'system-rvm':
