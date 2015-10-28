@@ -76,6 +76,15 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
     end
   end
 
+  def gemfile_from_puppet_url(source)
+    unless tmp = Puppet::FileServing::Content.indirection.find(source, :environment => resource.catalog.environment_instance, :links => :follow)
+      fail "Could not find gemfile at %s" % source
+    end
+    tmpfile = Tempfile.open(['puppet-rvm_geminstaller','.gem'])
+    tmpfile.write(tmp.content)
+    tmpfile.flush
+    return tmpfile.path.to_s
+  end
 
   def install(useversion = true)
     command = gembinary + ['install']
@@ -102,8 +111,7 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
       when /file/i
         command << uri.path
       when 'puppet'
-        # we don't support puppet:// URLs (yet)
-        raise Puppet::Error.new("puppet:// URLs are not supported as gem sources")
+        command << gemfile_from_puppet_url(uri.to_s)
       else
         # interpret it as a gem repository
         command << "--source" << "#{source}" << resource[:name]
