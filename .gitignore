@@ -38,4 +38,4 @@ coverage/
 ## Librarian-puppet
 .tmp/
 .librarian/
-
+Puppetfile.lock
