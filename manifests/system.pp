@@ -45,7 +45,7 @@ class rvm::system(
 
   exec { 'system-rvm':
     path        => '/usr/bin:/usr/sbin:/bin',
-    command     => "/usr/bin/curl -fsSL https://get.rvm.io | bash -s -- --version ${actual_version}",
+    command     => "/usr/bin/gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3 && /usr/bin/curl -fsSL https://get.rvm.io | bash -s -- --version ${actual_version}",
     creates     => '/usr/local/rvm/bin/rvm',
     environment => $environment,
   }
