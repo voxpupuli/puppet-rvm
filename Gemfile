@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 group :rake do
   gem 'puppet', ENV['PUPPET_VERSION'] || '>=3.0.0', :require => false
