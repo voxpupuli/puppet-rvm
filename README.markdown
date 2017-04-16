@@ -136,6 +136,8 @@ Alternatively, you can use this more verbose syntax:
         require      => Rvm_system_ruby['ruby-1.9.3-p448'];
     }
 
+To run an installed gem, use the syntax: `rvm ruby-1.9.3-p448@myproject do rails`
+
 ## Creating Aliases
 
 To create an RVM alias, you can use:
