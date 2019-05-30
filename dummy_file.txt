@@ -1,0 +1,8 @@
+Hello, World!
+This is a useless file just to trigger a travis-ci build on the repo, as-is.
+I suspect that the build will fail, since .travis.yml has it delete Gemfile.lock
+before bundling.   It settles on a recent version of beaker-rspec that depends on
+a more recent version of ruby than selected by .travis.yml, so the bundle fails.
+(I'm not sure why it doesn't look for an older version that has lower ruby requirements)
+
+But, point being, I want to make sure it's not failing because of my PR changes.
