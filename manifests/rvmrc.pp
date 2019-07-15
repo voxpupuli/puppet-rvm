@@ -7,7 +7,7 @@ class rvm::rvmrc(
   $autoupdate_flag = false,
   $silence_path_mismatch_check_flag = undef,
   $project_rvmrc = false,
-  $gem_options = "--no-rdoc --no-ri",
+  $gem_options = "--no-document",
   $install_on_use_flag = false,
   $gemset_create_on_use_flag = false,
   $ignore_gemsets_flag = false,
