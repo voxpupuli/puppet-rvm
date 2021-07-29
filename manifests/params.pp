@@ -11,16 +11,13 @@ class rvm::params ($manage_group = true) {
 
   $proxy_url = undef
   $no_proxy = undef
-  # hkp://keys.gnupg.net was used in the past but doesn't prodive the current key
-  # more infos: https://rvm.io/rvm/security
-  $key_server = 'hkp://pool.sks-keyservers.net'
+  $key_server = 'hkp://keys.gnupg.net'
 
-  # install the gpg key if gpg is installed or being installed in this puppet run
-  if defined(Class['gnupg']) or $facts['gnupg_installed'] {
-    $gnupg_key_id = '39499BDB'
-  } else {
-    $gnupg_key_id = false
-  }
+  # sadly the gpg module is ages old and doesn't support long key ids
+  $gnupg_key_id = [
+    { 'id' => 'D39DC0E3', 'source' => 'https://rvm.io/mpapis.asc' },
+    { 'id' => '39499BDB', 'source' => 'https://rvm.io/pkuczynski.asc' },
+  ]
 
   # ignored param, using gnupg module
   $gpg_package = $facts['kernel'] ? {
