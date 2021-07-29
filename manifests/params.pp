@@ -11,7 +11,9 @@ class rvm::params ($manage_group = true) {
 
   $proxy_url = undef
   $no_proxy = undef
-  $key_server = 'hkp://keys.gnupg.net'
+  # hkp://keys.gnupg.net was used in the past but doesn't prodive the current key
+  # more infos: https://rvm.io/rvm/security
+  $key_server = 'hkp://pool.sks-keyservers.net'
 
   # install the gpg key if gpg is installed or being installed in this puppet run
   if defined(Class['gnupg']) or $facts['gnupg_installed'] {
