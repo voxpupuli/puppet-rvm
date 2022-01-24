@@ -56,8 +56,8 @@ describe 'rvm' do
       context 'with no gnupg key id', :compile do
         let(:params) { { gnupg_key_id: false } }
 
-        it { is_expected.not_to contain_gnupg_key('rvm_39499BDB') }
-        it { is_expected.not_to contain_gnupg_key('rvm_') }
+        it { is_expected.to contain_gnupg_key('39499BDB') }
+        it { is_expected.to contain_gnupg_key('D39DC0E3') }
       end
     end
   end

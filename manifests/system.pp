@@ -6,7 +6,7 @@ class rvm::system (
   $no_proxy=undef,
   $key_server=undef,
   $home=$facts['root_home'],
-  #$gnupg_key_id=$rvm::params::gnupg_key_id
+  $gnupg_key_id=$rvm::params::gnupg_key_id
 ) inherits rvm::params {
   $actual_version = $version ? {
     undef     => 'latest',
@@ -39,11 +39,7 @@ class rvm::system (
   # install the gpg key
   #if $gnupg_key_id =~ Array {
   include gnupg
-  # sadly the gpg module is ages old and doesn't support long key ids
-  $gnupg_key_id = [
-    { 'id' => 'D39DC0E3', 'source' => 'https://rvm.io/mpapis.asc' },
-    { 'id' => '39499BDB', 'source' => 'https://rvm.io/pkuczynski.asc' },
-  ]
+
   # https keys are downloaded with wget
   ensure_packages(['wget'])
   $gnupg_key_id.each |Hash[String[1], String[1]] $key| {
