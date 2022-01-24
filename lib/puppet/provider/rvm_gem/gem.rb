@@ -63,7 +63,7 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
 
     case desc
     when %r{^\*\*\*}, %r{^\s*$}, %r{^\s+} then nil
-    when %r{gem: not found} then nil
+    when %r{gem: not found} then nil # rubocop:disable Lint/DuplicateBranch
     when %r{^(\S+)\s+\((\d+.*)\)}
       name = Regexp.last_match(1)
       version = Regexp.last_match(2).split(%r{,\s*})
@@ -77,7 +77,7 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
     end
   end
 
-  def install(useversion = true)
+  def install(useversion = true) # rubocop:disable Style/OptionalBooleanParameter
     command = gembinary + ['install']
     command << '-v' << resource[:ensure] if (!resource[:ensure].is_a? Symbol) && useversion
     # Dependencies are now installed by default

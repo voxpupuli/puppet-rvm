@@ -2,6 +2,7 @@
 
 require 'spec_helper_acceptance'
 
+# rubocop:disable RSpec/MultipleMemoizedHelpers
 describe 'rvm' do
   # host variables
   let(:osfamily) { fact('osfamily') }
@@ -296,3 +297,4 @@ describe 'rvm' do
     end
   end
 end
+# rubocop:enable RSpec/MultipleMemoizedHelpers

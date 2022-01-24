@@ -57,7 +57,7 @@ Puppet::Type.newtype(:rvm_gem) do
       end
     end
 
-    def insync?(is)
+    def insync?(is) # rubocop:disable Naming/MethodParameterName
       @should ||= []
 
       @latest ||= nil
