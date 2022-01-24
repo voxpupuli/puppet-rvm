@@ -38,35 +38,35 @@ class rvm::system (
 
   # install the gpg key
   #if $gnupg_key_id =~ Array {
-    include gnupg
-    # sadly the gpg module is ages old and doesn't support long key ids
-    $gnupg_key_id = [
-      { 'id' => 'D39DC0E3', 'source' => 'https://rvm.io/mpapis.asc' },
-      { 'id' => '39499BDB', 'source' => 'https://rvm.io/pkuczynski.asc' },
-    ]
-    # https keys are downloaded with wget
-    ensure_packages(['wget'])
-    $gnupg_key_id.each |Hash[String[1], String[1]] $key| {
-      gnupg_key { $key['id']:
-        ensure     => 'present',
-        user       => 'root',
-        key_id     => $key['id'],
-        key_source => $key['source'],
-        key_type   => public,
-        before     => Exec['system-rvm'],
-        require    => Class['gnupg'],
-      }
+  include gnupg
+  # sadly the gpg module is ages old and doesn't support long key ids
+  $gnupg_key_id = [
+    { 'id' => 'D39DC0E3', 'source' => 'https://rvm.io/mpapis.asc' },
+    { 'id' => '39499BDB', 'source' => 'https://rvm.io/pkuczynski.asc' },
+  ]
+  # https keys are downloaded with wget
+  ensure_packages(['wget'])
+  $gnupg_key_id.each |Hash[String[1], String[1]] $key| {
+    gnupg_key { $key['id']:
+      ensure     => 'present',
+      user       => 'root',
+      key_id     => $key['id'],
+      key_source => $key['source'],
+      key_type   => public,
+      before     => Exec['system-rvm'],
+      require    => Class['gnupg'],
     }
-    #} else {
-    #include gnupg
-    #class { 'rvm::gnupg_key':
-    #user       => 'root',
-      #key_server => $key_server,
-      #key_id     => $gnupg_key_id,
-      #before     => Exec['system-rvm'],
-      #require    => Class['gnupg'],
-      #}
-    #}
+  }
+  #} else {
+  #include gnupg
+  #class { 'rvm::gnupg_key':
+  #user       => 'root',
+  #key_server => $key_server,
+  #key_id     => $gnupg_key_id,
+  #before     => Exec['system-rvm'],
+  #require    => Class['gnupg'],
+  #}
+  #}
 
   if $install_from {
     file { '/tmp/rvm':
