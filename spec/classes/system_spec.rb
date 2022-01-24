@@ -17,7 +17,7 @@ describe 'rvm::system' do
     it { is_expected.not_to contain_exec('system-rvm-get') }
 
     it do
-      is_expected.to contain_exec('system-rvm').with('path' => '/usr/bin:/usr/sbin:/bin:/usr/local/bin')
+      expect(subject).to contain_exec('system-rvm').with('path' => '/usr/bin:/usr/sbin:/bin:/usr/local/bin')
     end
   end
 

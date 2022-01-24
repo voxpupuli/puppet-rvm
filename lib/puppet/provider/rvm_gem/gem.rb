@@ -33,13 +33,11 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
                end
 
     if (name = hash[:justme])
-      command << '^' + name + '$'
+      command << ('^' + name + '$')
     end
 
     # use proxy if proxy_url is set
-    if resource[:proxy_url] && !resource[:proxy_url].empty?
-      command << '--http-proxy' << resource[:proxy_url]
-    end
+    command << '--http-proxy' << resource[:proxy_url] if resource[:proxy_url] && !resource[:proxy_url].empty?
 
     list = []
     begin
@@ -49,11 +47,12 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
           gemhash
         end
       end.compact
-    rescue Puppet::ExecutionFailure => detail
-      Puppet.debug "`rvmcmd` command failed with #{detail}"
+    rescue Puppet::ExecutionFailure => e
+      Puppet.debug "`rvmcmd` command failed with #{e}"
     end
 
     return list.shift if hash[:justme]
+
     list
   end
 
@@ -61,7 +60,7 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
     desc = desc.gsub('default: ', '')
 
     case desc
-    when %r{^\*\*\*}, %r{^\s*$}, %r{^\s+} then return nil
+    when %r{^\*\*\*}, %r{^\s*$}, %r{^\s+} then nil
     when %r{gem: not found} then nil
     when %r{^(\S+)\s+\((\d+.*)\)}
       name = Regexp.last_match(1)
@@ -83,15 +82,13 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
     # command << "--include-dependencies"
 
     # use proxy if proxy_url is set
-    if resource[:proxy_url] && !resource[:proxy_url].empty?
-      command << '--http-proxy' << resource[:proxy_url]
-    end
+    command << '--http-proxy' << resource[:proxy_url] if resource[:proxy_url] && !resource[:proxy_url].empty?
 
     if (source = resource[:source])
       begin
         uri = URI.parse(source)
-      rescue => detail
-        raise "Invalid source '#{uri}': #{detail}"
+      rescue StandardError => e
+        raise "Invalid source '#{uri}': #{e}"
       end
 
       case uri.scheme

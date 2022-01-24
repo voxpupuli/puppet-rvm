@@ -26,17 +26,15 @@ Puppet::Type.type(:rvm_gemset).provide(:gemset) do
     command = gemsetcommand + ['list']
 
     # use proxy if proxy_url is set
-    if resource[:proxy_url] && !resource[:proxy_url].empty?
-      command << '--http-proxy' << resource[:proxy_url]
-    end
+    command << '--http-proxy' << resource[:proxy_url] if resource[:proxy_url] && !resource[:proxy_url].empty?
 
     list = []
     begin
       list = execute(command).split("\n").map do |line|
         line.strip if line =~ %r{^\s+\S+}
       end.compact
-    rescue Puppet::ExecutionFailure => detail
-      Puppet.debug "`rvmcmd` command failed with #{detail}"
+    rescue Puppet::ExecutionFailure => e
+      Puppet.debug "`rvmcmd` command failed with #{e}"
     end
 
     list

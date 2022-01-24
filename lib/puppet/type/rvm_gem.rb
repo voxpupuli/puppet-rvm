@@ -30,8 +30,8 @@ Puppet::Type.newtype(:rvm_gem) do
       current = retrieve
       begin
         provider.update
-      rescue => detail
-        raise "Could not update: #{detail}"
+      rescue StandardError => e
+        raise "Could not update: #{e}"
       end
 
       if current == :absent
@@ -44,8 +44,8 @@ Puppet::Type.newtype(:rvm_gem) do
     newvalue(%r{.}) do
       begin
         provider.install
-      rescue => detail
-        raise "Could not update: #{detail}"
+      rescue StandardError => e
+        raise "Could not update: #{e}"
       end
 
       if retrieve == :absent
@@ -78,9 +78,9 @@ Puppet::Type.newtype(:rvm_gem) do
             begin
               @latest = provider.latest
               @lateststamp = Time.now.to_i
-            rescue => detail
-              error = Puppet::Error.new("Could not get latest version: #{detail}")
-              error.set_backtrace(detail.backtrace)
+            rescue StandardError => e
+              error = Puppet::Error.new("Could not get latest version: #{e}")
+              error.set_backtrace(e.backtrace)
               raise error
             end
           end
