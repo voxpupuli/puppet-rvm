@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.type(:rvm_system_ruby).provide(:rvm) do
   desc 'Ruby RVM support.'
 

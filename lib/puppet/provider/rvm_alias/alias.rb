@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # RVM gemset support
 Puppet::Type.type(:rvm_alias).provide(:alias) do
   desc 'RVM alias support.'

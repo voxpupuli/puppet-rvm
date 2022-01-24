@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.newtype(:rvm_gem) do
   @doc = 'Ruby Gem support using RVM.'
 

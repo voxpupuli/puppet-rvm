@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # RVM gemset support
 Puppet::Type.type(:rvm_gemset).provide(:gemset) do
   desc 'RVM gemset support.'
