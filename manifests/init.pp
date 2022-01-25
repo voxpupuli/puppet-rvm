@@ -10,8 +10,7 @@ class rvm (
   $rvm_gems= {},
   $proxy_url=$rvm::params::proxy_url,
   $no_proxy=$rvm::params::no_proxy,
-  $key_server=$rvm::params::key_server,
-  $gnupg_key_id=$rvm::params::gnupg_key_id
+  $gnupg_key_id=$rvm::params::gnupg_key_id,
 ) inherits rvm::params {
   if $install_rvm {
     # rvm has now autolibs enabled by default so let it manage the dependencies
@@ -29,8 +28,7 @@ class rvm (
       version      => $version,
       proxy_url    => $proxy_url,
       no_proxy     => $no_proxy,
-      key_server   => $key_server,
-      #gnupg_key_id => $gnupg_key_id,
+      gnupg_key_id => $gnupg_key_id,
       install_from => $install_from,
     }
   }

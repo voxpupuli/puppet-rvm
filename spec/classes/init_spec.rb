@@ -53,9 +53,7 @@ describe 'rvm' do
         it { is_expected.to contain_rvm__system_user('doe') }
       end
 
-      context 'with no gnupg key id', :compile do
-        let(:params) { { gnupg_key_id: false } }
-
+      context 'with gnupg key id default value', :compile do
         it { is_expected.to contain_gnupg_key('39499BDB') }
         it { is_expected.to contain_gnupg_key('D39DC0E3') }
       end

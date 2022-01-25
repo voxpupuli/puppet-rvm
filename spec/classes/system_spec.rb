@@ -56,13 +56,14 @@ describe 'rvm::system' do
   context 'with gnupg', :compile do
     let(:pre_condition) { "class { '::gnupg': }" }
 
-    it { is_expected.to contain_gnupg_key('39499BDB').with_key_id('D39DC0E3') }
+    it { is_expected.to contain_gnupg_key('D39DC0E3').with_key_id('D39DC0E3') }
+    it { is_expected.to contain_gnupg_key('39499BDB').with_key_id('39499BDB') }
   end
 
   context 'with gnupg customized', :compile do
-    let(:params) { { key_server: 'hkp://example.com' } }
+    let(:params) { { gnupg_key_id: [{ id: '1234ABCD', source: 'http://example.com/key.asc' }] } }
     let(:pre_condition) { "class { '::gnupg': }" }
 
-    it { is_expected.to contain_gnupg_key('D39DC0E3').with_key_id('D39DC0E3').with_key_server('hkp://example.com') }
+    it { is_expected.to contain_gnupg_key('1234ABCD').with_key_id('1234ABCD').with_key_source('http://example.com/key.asc') }
   end
 end

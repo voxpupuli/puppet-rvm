@@ -11,7 +11,6 @@ class rvm::params ($manage_group = true) {
 
   $proxy_url = undef
   $no_proxy = undef
-  $key_server = 'hkp://keys.gnupg.net'
 
   # sadly the gpg module is ages old and doesn't support long key ids
   $gnupg_key_id = [

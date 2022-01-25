@@ -4,9 +4,8 @@ class rvm::system (
   $install_from=undef,
   $proxy_url=undef,
   $no_proxy=undef,
-  $key_server=undef,
   $home=$facts['root_home'],
-  $gnupg_key_id=$rvm::params::gnupg_key_id
+  $gnupg_key_id=$rvm::params::gnupg_key_id,
 ) inherits rvm::params {
   $actual_version = $version ? {
     undef     => 'latest',
@@ -37,32 +36,23 @@ class rvm::system (
   $environment = concat($proxy_environment, ["HOME=${home}"])
 
   # install the gpg key
-  #if $gnupg_key_id =~ Array {
-  include gnupg
+  if $gnupg_key_id {
+    include gnupg
 
-  # https keys are downloaded with wget
-  ensure_packages(['wget'])
-  $gnupg_key_id.each |Hash[String[1], String[1]] $key| {
-    gnupg_key { $key['id']:
-      ensure     => 'present',
-      user       => 'root',
-      key_id     => $key['id'],
-      key_source => $key['source'],
-      key_type   => public,
-      before     => Exec['system-rvm'],
-      require    => Class['gnupg'],
+    # https keys are downloaded with wget
+    ensure_packages(['wget'])
+    $gnupg_key_id.each |Hash[String[1], String[1]] $key| {
+      gnupg_key { $key['id']:
+        ensure     => 'present',
+        user       => 'root',
+        key_id     => $key['id'],
+        key_source => $key['source'],
+        key_type   => public,
+        before     => Exec['system-rvm'],
+        require    => Class['gnupg'],
+      }
     }
   }
-  #} else {
-  #include gnupg
-  #class { 'rvm::gnupg_key':
-  #user       => 'root',
-  #key_server => $key_server,
-  #key_id     => $gnupg_key_id,
-  #before     => Exec['system-rvm'],
-  #require    => Class['gnupg'],
-  #}
-  #}
 
   if $install_from {
     file { '/tmp/rvm':
@@ -95,8 +85,10 @@ class rvm::system (
   # the fact won't work until rvm is installed before puppet starts
   if $facts['rvm_version'] and !empty($facts['rvm_version']) {
     if ($version != undef) and ($version != present) and ($version != $facts['rvm_version']) {
-      if defined(Class['rvm::gnupg_key']) {
-        Class['rvm::gnupg_key'] -> Exec['system-rvm-get']
+      if $gnupg_key_id {
+        $gnupg_key_id.each |Hash[String[1], String[1]] $key| {
+          Gnupg_key[$key['id']] -> Exec['system-rvm-get']
+        }
       }
 
       # Update the rvm installation to the version specified
