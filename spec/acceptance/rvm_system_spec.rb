@@ -276,7 +276,8 @@ describe 'rvm' do
       end
     end
 
-    it 'outputs status via passenger-status' do
+    # this works only on legacy passenger, which we only have on CentOS 7
+    it 'outputs status via passenger-status', if: fact('operatingsystemrelease').to_i == 7 do
       shell("rvmsudo_secure_path=1 /usr/local/rvm/bin/rvm #{ruby27_version} do passenger-status") do |r|
         r.stdout.should =~ %r{General information}
         r.exit_code.should == 0
