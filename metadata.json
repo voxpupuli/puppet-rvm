@@ -64,13 +64,6 @@
       ]
     },
     {
-      "operatingsystem": "Solaris",
-      "operatingsystemrelease": [
-        "10",
-        "11"
-      ]
-    },
-    {
       "operatingsystem": "Darwin",
       "operatingsystemrelease": [
         "10",
