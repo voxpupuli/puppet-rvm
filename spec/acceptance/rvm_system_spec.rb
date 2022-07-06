@@ -254,13 +254,12 @@ describe 'rvm' do
         apply_manifest(manifest, catch_changes: true)
       end
 
-      shell("/usr/local/rvm/bin/rvm #{ruby27_version} do #{ruby27_bin}gem list passenger | grep \"passenger (#{passenger_version})\"").exit_code.should be_zero
+      expect(shell("/usr/local/rvm/bin/rvm #{ruby27_version} do #{ruby27_bin}gem list passenger | grep \"passenger (#{passenger_version})\"").exit_code).to be_zero
     end
 
     it 'is running' do
       service(service_name) do |s|
-        s.should_not be_enabled
-        s.should be_running
+        expect(s).to be_enabled.and be_running
       end
     end
 
@@ -281,14 +280,13 @@ describe 'rvm' do
 
     it 'module loading should be configured as expected' do
       file(load_file) do |f|
-        f.should contain "LoadModule passenger_module #{passenger_module_path}"
+        expect(f).to contain "LoadModule passenger_module #{passenger_module_path}"
       end
     end
 
     it 'module behavior should be configured as expected' do
       file(conf_file) do |f|
-        f.should contain "PassengerRoot \"#{passenger_root}\""
-        f.should contain "PassengerRuby \"#{passenger_ruby}\""
+        expect(f).to contain("PassengerRoot \"#{passenger_root}\"").and contain("PassengerRuby \"#{passenger_ruby}\"")
       end
     end
   end
