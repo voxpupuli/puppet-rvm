@@ -247,12 +247,7 @@ describe 'rvm' do
     it 'installs with no errors' do
       # Run it twice and test for idempotency
       apply_manifest(manifest, catch_failures: true)
-      # swapping expectations under Ubuntu 12.04, 14.04 - apache2-prefork-dev is being purged/restored by puppetlabs/apache, which is beyond the scope of this module
-      if osname == 'Ubuntu' && ['12.04', '14.04'].include?(osversion)
-        apply_manifest(manifest, expect_changes: true)
-      else
-        apply_manifest(manifest, catch_changes: true)
-      end
+      apply_manifest(manifest, catch_changes: true)
 
       expect(shell("/usr/local/rvm/bin/rvm #{ruby27_version} do #{ruby27_bin}gem list passenger | grep \"passenger (#{passenger_version})\"").exit_code).to be_zero
     end
