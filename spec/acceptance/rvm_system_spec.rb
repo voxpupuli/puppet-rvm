@@ -86,8 +86,8 @@ describe 'rvm' do
     apply_manifest(manifest, catch_failures: true)
     apply_manifest(manifest, catch_changes: true)
     shell('/usr/local/rvm/bin/rvm list') do |r|
-      r.stdout.should =~ Regexp.new(Regexp.escape('# No rvm rubies installed yet.'))
-      r.exit_code.should be_zero
+      expect(r.stdout).to include('# No rvm rubies installed yet.')
+      expect(r.exit_code).to be_zero
     end
   end
 
@@ -112,9 +112,8 @@ describe 'rvm' do
 
     it 'reflects installed rubies' do
       shell('/usr/local/rvm/bin/rvm list') do |r|
-        r.stdout.should =~ Regexp.new(Regexp.escape(ruby27_version))
-        r.stdout.should =~ Regexp.new(Regexp.escape(ruby26_version))
-        r.exit_code.should be_zero
+        expect(r.stdout).to include(ruby27_version).and include(ruby26_version)
+        expect(r.exit_code).to be_zero
       end
     end
 
@@ -154,17 +153,13 @@ describe 'rvm' do
 
       it 'reflects installed gems and gemsets' do
         shell("/usr/local/rvm/bin/rvm #{ruby27_version} gemset list") do |r|
-          r.stdout.should =~ Regexp.new(Regexp.escape("\n=> (default)"))
-          r.stdout.should =~ Regexp.new(Regexp.escape("\n   global"))
-          r.stdout.should =~ Regexp.new(Regexp.escape("\n   #{ruby27_gemset}"))
-          r.exit_code.should be_zero
+          expect(r.stdout).to include("\n=> (default)").and include("\n   global").and include("\n   #{ruby27_gemset}")
+          expect(r.exit_code).to be_zero
         end
 
         shell("/usr/local/rvm/bin/rvm #{ruby26_version} gemset list") do |r|
-          r.stdout.should =~ Regexp.new(Regexp.escape("\n=> (default)"))
-          r.stdout.should =~ Regexp.new(Regexp.escape("\n   global"))
-          r.stdout.should =~ Regexp.new(Regexp.escape("\n   #{ruby26_gemset}"))
-          r.exit_code.should be_zero
+          expect(r.stdout).to include("\n=> (default)").and include("\n   global").and include("\n   #{ruby26_gemset}")
+          expect(r.exit_code).to be_zero
         end
       end
     end
@@ -190,8 +185,8 @@ describe 'rvm' do
 
     it 'reflects installed rubies' do
       shell('/usr/local/rvm/bin/rvm list') do |r|
-        r.stdout.should =~ Regexp.new(Regexp.escape(jruby_version))
-        r.exit_code.should be_zero
+        expect(r.stdout).to include(jruby_version)
+        expect(r.exit_code).to be_zero
       end
     end
   end
@@ -252,48 +247,41 @@ describe 'rvm' do
     it 'installs with no errors' do
       # Run it twice and test for idempotency
       apply_manifest(manifest, catch_failures: true)
-      # swapping expectations under Ubuntu 12.04, 14.04 - apache2-prefork-dev is being purged/restored by puppetlabs/apache, which is beyond the scope of this module
-      if osname == 'Ubuntu' && ['12.04', '14.04'].include?(osversion)
-        apply_manifest(manifest, expect_changes: true)
-      else
-        apply_manifest(manifest, catch_changes: true)
-      end
+      apply_manifest(manifest, catch_changes: true)
 
-      shell("/usr/local/rvm/bin/rvm #{ruby27_version} do #{ruby27_bin}gem list passenger | grep \"passenger (#{passenger_version})\"").exit_code.should be_zero
+      expect(shell("/usr/local/rvm/bin/rvm #{ruby27_version} do #{ruby27_bin}gem list passenger | grep \"passenger (#{passenger_version})\"").exit_code).to be_zero
     end
 
     it 'is running' do
       service(service_name) do |s|
-        s.should_not be_enabled
-        s.should be_running
+        expect(s).to be_enabled.and be_running
       end
     end
 
     it 'answers' do
       shell('/usr/bin/curl localhost:80') do |r|
-        r.stdout.should =~ %r{^hello <b>world</b>$}
-        r.exit_code.should == 0
+        expect(r.stdout).to include('hello <b>world</b>')
+        expect(r.exit_code).to be_zero
       end
     end
 
     # this works only on legacy passenger, which we only have on CentOS 7
     it 'outputs status via passenger-status', if: fact('operatingsystemrelease').to_i == 7 do
       shell("rvmsudo_secure_path=1 /usr/local/rvm/bin/rvm #{ruby27_version} do passenger-status") do |r|
-        r.stdout.should =~ %r{General information}
-        r.exit_code.should == 0
+        expect(r.stdout).to include('General information')
+        expect(r.exit_code).to be_zero
       end
     end
 
     it 'module loading should be configured as expected' do
       file(load_file) do |f|
-        f.should contain "LoadModule passenger_module #{passenger_module_path}"
+        expect(f).to contain "LoadModule passenger_module #{passenger_module_path}"
       end
     end
 
     it 'module behavior should be configured as expected' do
       file(conf_file) do |f|
-        f.should contain "PassengerRoot \"#{passenger_root}\""
-        f.should contain "PassengerRuby \"#{passenger_ruby}\""
+        expect(f).to contain("PassengerRoot \"#{passenger_root}\"").and contain("PassengerRuby \"#{passenger_ruby}\"")
       end
     end
   end
