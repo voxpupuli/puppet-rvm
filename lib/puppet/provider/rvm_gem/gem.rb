@@ -77,7 +77,7 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
     end
   end
 
-  def install(useversion = true) # rubocop:disable Style/OptionalBooleanParameter
+  def install(useversion = true)
     command = gembinary + ['install']
     command << '-v' << resource[:ensure] if (!resource[:ensure].is_a? Symbol) && useversion
     # Dependencies are now installed by default
