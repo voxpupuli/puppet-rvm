@@ -54,9 +54,9 @@ If GPG is installed, installing RVM requires the RVM GPG key.
 This module will install the key if `gpg` is already installed or being installed with the
 [`golja-gnupg`](https://forge.puppetlabs.com/golja/gnupg) module.
 
-If you don't want this module to install the gpg key just set to false the `gpg_key_id` parameter
+If you don't want this module to manage any signing keys, set the `signing_keys` parameter to `[]`
 
-    class { '::rvm': gnupg_key_id => false }
+    class { '::rvm': signing_keys => [] }
 
 ## Installing Ruby
 
