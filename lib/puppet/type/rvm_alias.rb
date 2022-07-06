@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.newtype(:rvm_alias) do
   @doc = 'Manage RVM Aliases.'
 

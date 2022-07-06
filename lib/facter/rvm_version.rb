@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Facter.add(:rvm_version) do
   rvm_binary = '/usr/local/rvm/bin/rvm'
 

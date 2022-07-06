@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'rvm' do
@@ -34,12 +36,13 @@ describe 'rvm' do
         end
 
         it {
-          is_expected.to contain_rvm_system_ruby('ruby-1.9').with(ensure: 'present',
-                                                                  default_use: true)
+          expect(subject).to contain_rvm_system_ruby('ruby-1.9').with(ensure: 'present',
+                                                                      default_use: true)
         }
+
         it {
-          is_expected.to contain_rvm_system_ruby('ruby-2.0').with(ensure: 'present',
-                                                                  default_use: nil)
+          expect(subject).to contain_rvm_system_ruby('ruby-2.0').with(ensure: 'present',
+                                                                      default_use: nil)
         }
       end
 
@@ -50,11 +53,9 @@ describe 'rvm' do
         it { is_expected.to contain_rvm__system_user('doe') }
       end
 
-      context 'with no gnupg key id', :compile do
-        let(:params) { { gnupg_key_id: false } }
-
-        it { is_expected.not_to contain_gnupg_key('rvm_39499BDB') }
-        it { is_expected.not_to contain_gnupg_key('rvm_') }
+      context 'with gnupg key id default value', :compile do
+        it { is_expected.to contain_gnupg_key('39499BDB') }
+        it { is_expected.to contain_gnupg_key('D39DC0E3') }
       end
     end
   end

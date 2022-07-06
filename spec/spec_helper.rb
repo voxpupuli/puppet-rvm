@@ -15,3 +15,5 @@ if File.exist?(File.join(__dir__, 'default_module_facts.yml'))
     add_custom_fact name.to_sym, value
   end
 end
+
+require 'spec_helper_methods'

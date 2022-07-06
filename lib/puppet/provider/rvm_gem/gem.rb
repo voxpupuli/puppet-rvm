@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'puppet/provider/package'
 require 'uri'
 
@@ -33,13 +35,11 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
                end
 
     if (name = hash[:justme])
-      command << '^' + name + '$'
+      command << ("^#{name}$")
     end
 
     # use proxy if proxy_url is set
-    if resource[:proxy_url] && !resource[:proxy_url].empty?
-      command << '--http-proxy' << resource[:proxy_url]
-    end
+    command << '--http-proxy' << resource[:proxy_url] if resource[:proxy_url] && !resource[:proxy_url].empty?
 
     list = []
     begin
@@ -49,11 +49,12 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
           gemhash
         end
       end.compact
-    rescue Puppet::ExecutionFailure => detail
-      Puppet.debug "`rvmcmd` command failed with #{detail}"
+    rescue Puppet::ExecutionFailure => e
+      Puppet.debug "`rvmcmd` command failed with #{e}"
     end
 
     return list.shift if hash[:justme]
+
     list
   end
 
@@ -61,8 +62,8 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
     desc = desc.gsub('default: ', '')
 
     case desc
-    when %r{^\*\*\*}, %r{^\s*$}, %r{^\s+} then return nil
-    when %r{gem: not found} then nil
+    when %r{^\*\*\*}, %r{^\s*$}, %r{^\s+} then nil
+    when %r{gem: not found} then nil # rubocop:disable Lint/DuplicateBranch
     when %r{^(\S+)\s+\((\d+.*)\)}
       name = Regexp.last_match(1)
       version = Regexp.last_match(2).split(%r{,\s*})
@@ -76,22 +77,20 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
     end
   end
 
-  def install(useversion = true)
+  def install(useversion = true) # rubocop:disable Style/OptionalBooleanParameter
     command = gembinary + ['install']
     command << '-v' << resource[:ensure] if (!resource[:ensure].is_a? Symbol) && useversion
     # Dependencies are now installed by default
     # command << "--include-dependencies"
 
     # use proxy if proxy_url is set
-    if resource[:proxy_url] && !resource[:proxy_url].empty?
-      command << '--http-proxy' << resource[:proxy_url]
-    end
+    command << '--http-proxy' << resource[:proxy_url] if resource[:proxy_url] && !resource[:proxy_url].empty?
 
     if (source = resource[:source])
       begin
         uri = URI.parse(source)
-      rescue => detail
-        raise "Invalid source '#{uri}': #{detail}"
+      rescue StandardError => e
+        raise "Invalid source '#{uri}': #{e}"
       end
 
       case uri.scheme

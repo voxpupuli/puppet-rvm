@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'rvm::system' do
@@ -17,7 +19,7 @@ describe 'rvm::system' do
     it { is_expected.not_to contain_exec('system-rvm-get') }
 
     it do
-      is_expected.to contain_exec('system-rvm').with('path' => '/usr/bin:/usr/sbin:/bin:/usr/local/bin')
+      expect(subject).to contain_exec('system-rvm').with('path' => '/usr/bin:/usr/sbin:/bin:/usr/local/bin')
     end
   end
 
@@ -54,13 +56,14 @@ describe 'rvm::system' do
   context 'with gnupg', :compile do
     let(:pre_condition) { "class { '::gnupg': }" }
 
-    it { is_expected.to contain_gnupg_key('rvm_39499BDB').with_key_id('39499BDB').with_key_server('hkp://keys.gnupg.net') }
+    it { is_expected.to contain_gnupg_key('D39DC0E3').with_key_id('D39DC0E3') }
+    it { is_expected.to contain_gnupg_key('39499BDB').with_key_id('39499BDB') }
   end
 
   context 'with gnupg customized', :compile do
-    let(:params) { { key_server: 'hkp://example.com', gnupg_key_id: 'AAAAAAAA' } }
+    let(:params) { { gnupg_key_id: [{ id: '1234ABCD', source: 'http://example.com/key.asc' }] } }
     let(:pre_condition) { "class { '::gnupg': }" }
 
-    it { is_expected.to contain_gnupg_key('rvm_AAAAAAAA').with_key_id('AAAAAAAA').with_key_server('hkp://example.com') }
+    it { is_expected.to contain_gnupg_key('1234ABCD').with_key_id('1234ABCD').with_key_source('http://example.com/key.asc') }
   end
 end
