@@ -3,9 +3,6 @@ define rvm::system_user (
   $create = true,
   $manage_group = undef
 ) {
-  if $facts['os']['family'] == 'Windows' {
-    fail('rvm::system_user is not supported on Windows')
-  }
   include rvm::params
 
   $manage_group_real = $manage_group ? {

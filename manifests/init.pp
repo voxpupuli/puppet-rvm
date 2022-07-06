@@ -4,7 +4,7 @@ class rvm (
   $install_from=undef,
   $install_rvm=true,
   $install_dependencies=false,
-  $manage_rvmrc=$rvm::params::manage_rvmrc,
+  $manage_rvmrc=true,
   $system_users=[],
   $system_rubies= {},
   $rvm_gems= {},
