@@ -1,4 +1,5 @@
 # Default module parameters
+# @api private
 class rvm::params (
   Boolean $manage_group = true,
 ) {
