@@ -21,7 +21,7 @@ class rvm (
     }
 
     if $manage_rvmrc {
-      ensure_resource('class', 'rvm::rvmrc')
+      include rvm::rvmrc
     }
 
     class { 'rvm::system':
@@ -35,7 +35,5 @@ class rvm (
 
   rvm::system_user { $system_users: }
   create_resources('rvm_system_ruby', $system_rubies, { 'ensure' => present, 'proxy_url' => $proxy_url, 'no_proxy' => $no_proxy })
-  if $rvm_gems != {} {
-    create_resources('rvm_gem', $rvm_gems )
-  }
+  create_resources('rvm_gem', $rvm_gems)
 }

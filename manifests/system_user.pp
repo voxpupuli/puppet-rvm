@@ -3,13 +3,6 @@ define rvm::system_user (
   Boolean $create = true,
   Optional[Boolean] $manage_group = undef
 ) {
-  include rvm::params
-
-  $manage_group_real = $manage_group ? {
-    undef   => $rvm::params::manage_group,
-    default => $manage_group
-  }
-
   if $create {
     ensure_resource('user', $name, {
         'ensure' => 'present',
@@ -18,7 +11,8 @@ define rvm::system_user (
     User[$name] -> Exec["rvm-system-user-${name}"]
   }
 
-  if $manage_group_real {
+  include rvm::params
+  if pick($manage_group, $rvm::params::manage_group) {
     include rvm::group
     Group[$rvm::params::group] -> Exec["rvm-system-user-${name}"]
   }

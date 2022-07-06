@@ -2,9 +2,7 @@
 class rvm::params (
   Boolean $manage_group = true,
 ) {
-  $group = $facts['os']['name'] ? {
-    default => 'rvm',
-  }
+  $group = 'rvm'
 
   $proxy_url = undef
   $no_proxy = undef
