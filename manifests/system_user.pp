@@ -1,7 +1,7 @@
 # Create a user that belongs to the correct group to have access to RVM
 define rvm::system_user (
-  $create = true,
-  $manage_group = undef
+  Boolean $create = true,
+  Optional[Boolean] $manage_group = undef
 ) {
   include rvm::params
 

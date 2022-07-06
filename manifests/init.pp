@@ -1,15 +1,15 @@
 # Install RVM, create system user a install system level rubies
 class rvm (
-  $version=undef,
-  $install_from=undef,
-  $install_rvm=true,
-  $install_dependencies=false,
-  $manage_rvmrc=true,
-  $system_users=[],
-  $system_rubies= {},
-  $rvm_gems= {},
-  $proxy_url=$rvm::params::proxy_url,
-  $no_proxy=$rvm::params::no_proxy,
+  Optional[String[1]] $version = undef,
+  Optional[String[1]] $install_from = undef,
+  Boolean $install_rvm = true,
+  Boolean $install_dependencies = false,
+  Boolean $manage_rvmrc = true,
+  Array[String[1]] $system_users = [],
+  Hash[String[1], Any] $system_rubies = {},
+  Hash[String[1], Any] $rvm_gems = {},
+  Optional[String[1]] $proxy_url = undef,
+  Optional[String[1]] $no_proxy = undef,
   Array[Hash[String[1], String[1]]] $signing_keys = $rvm::params::signing_keys,
 ) inherits rvm::params {
   if $install_rvm {
@@ -36,7 +36,6 @@ class rvm (
   rvm::system_user { $system_users: }
   create_resources('rvm_system_ruby', $system_rubies, { 'ensure' => present, 'proxy_url' => $proxy_url, 'no_proxy' => $no_proxy })
   if $rvm_gems != {} {
-    validate_hash($rvm_gems)
     create_resources('rvm_gem', $rvm_gems )
   }
 }

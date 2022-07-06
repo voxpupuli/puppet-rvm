@@ -1,5 +1,7 @@
 # Default module parameters
-class rvm::params ($manage_group = true) {
+class rvm::params (
+  Boolean $manage_group = true,
+) {
   $group = $facts['os']['name'] ? {
     default => 'rvm',
   }
