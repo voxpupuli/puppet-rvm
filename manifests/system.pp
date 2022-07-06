@@ -5,7 +5,7 @@ class rvm::system (
   $proxy_url=undef,
   $no_proxy=undef,
   $home=$facts['root_home'],
-  $gnupg_key_id=$rvm::params::gnupg_key_id,
+  Array[Hash[String[1], String[1]]] $signing_keys = $rvm::params::signing_keys,
 ) inherits rvm::params {
   $actual_version = $version ? {
     undef     => 'latest',
@@ -35,13 +35,12 @@ class rvm::system (
   $proxy_environment = concat($http_proxy_environment, $no_proxy_environment)
   $environment = concat($proxy_environment, ["HOME=${home}"])
 
-  # install the gpg key
-  if $gnupg_key_id {
+  if $signing_keys {
     include gnupg
 
     # https keys are downloaded with wget
     ensure_packages(['wget'])
-    $gnupg_key_id.each |Hash[String[1], String[1]] $key| {
+    $signing_keys.each |Hash[String[1], String[1]] $key| {
       gnupg_key { $key['id']:
         ensure     => 'present',
         user       => 'root',
@@ -85,10 +84,8 @@ class rvm::system (
   # the fact won't work until rvm is installed before puppet starts
   if $facts['rvm_version'] and !empty($facts['rvm_version']) {
     if ($version != undef) and ($version != present) and ($version != $facts['rvm_version']) {
-      if $gnupg_key_id {
-        $gnupg_key_id.each |Hash[String[1], String[1]] $key| {
-          Gnupg_key[$key['id']] -> Exec['system-rvm-get']
-        }
+      $signing_keys.each |Hash[String[1], String[1]] $key| {
+        Gnupg_key[$key['id']] -> Exec['system-rvm-get']
       }
 
       # Update the rvm installation to the version specified

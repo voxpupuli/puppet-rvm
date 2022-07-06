@@ -61,7 +61,7 @@ describe 'rvm::system' do
   end
 
   context 'with gnupg customized', :compile do
-    let(:params) { { gnupg_key_id: [{ id: '1234ABCD', source: 'http://example.com/key.asc' }] } }
+    let(:params) { { signing_keys: [{ id: '1234ABCD', source: 'http://example.com/key.asc' }] } }
     let(:pre_condition) { "class { '::gnupg': }" }
 
     it { is_expected.to contain_gnupg_key('1234ABCD').with_key_id('1234ABCD').with_key_source('http://example.com/key.asc') }

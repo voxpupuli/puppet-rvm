@@ -10,7 +10,7 @@ class rvm (
   $rvm_gems= {},
   $proxy_url=$rvm::params::proxy_url,
   $no_proxy=$rvm::params::no_proxy,
-  $gnupg_key_id=$rvm::params::gnupg_key_id,
+  Array[Hash[String[1], String[1]]] $signing_keys = $rvm::params::signing_keys,
 ) inherits rvm::params {
   if $install_rvm {
     # rvm has now autolibs enabled by default so let it manage the dependencies
@@ -28,7 +28,7 @@ class rvm (
       version      => $version,
       proxy_url    => $proxy_url,
       no_proxy     => $no_proxy,
-      gnupg_key_id => $gnupg_key_id,
+      signing_keys => $signing_keys,
       install_from => $install_from,
     }
   }
