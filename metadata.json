@@ -22,19 +22,22 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
       ]
     },
     {
@@ -52,8 +55,8 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "9",
-        "10"
+        "10",
+        "11"
       ]
     },
     {
@@ -76,7 +79,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 6.1.0 < 7.0.0"
+      "version_requirement": ">= 6.1.0 < 8.0.0"
     }
   ]
 }
