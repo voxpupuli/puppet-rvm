@@ -21,17 +21,13 @@ Puppet::Type.type(:rvm_system_ruby).provide(:rvm) do
   end
 
   def exists?
-    rvmcmd('list', 'strings').split("\n").any? do |line|
-      line =~ Regexp.new(Regexp.escape(resource[:name]))
-    end
+    rvmcmd('list', 'strings').split("\n").include?(resource[:name])
   rescue Puppet::ExecutionFailure => e
     raise Puppet::Error, "Could not list RVMs: #{e}"
   end
 
   def default_use
-    rvmcmd('list', 'default').split("\n").any? do |line|
-      line =~ Regexp.new(Regexp.escape(resource[:name]))
-    end
+    rvmcmd('list', 'default').split("\n").include?(resource[:name])
   rescue Puppet::ExecutionFailure => e
     raise Puppet::Error, "Could not list default RVM: #{e}"
   end
