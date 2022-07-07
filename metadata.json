@@ -1,12 +1,12 @@
 {
-  "name": "maestrodev-rvm",
+  "name": "puppet-rvm",
   "version": "1.13.2",
-  "author": "maestrodev & Brandon Turner <bt@brandonturner.net>",
+  "author": "Vox Pupuli & maestrodev & Brandon Turner <bt@brandonturner.net>",
   "summary": "A puppet module for installing and using RVM (Ruby Version Manager)",
   "license": "BSD-3-Clause",
-  "source": "https://github.com/maestrodev/puppet-rvm",
-  "project_page": "https://github.com/maestrodev/puppet-rvm",
-  "issues_url": "https://github.com/maestrodev/puppet-rvm/issues",
+  "source": "https://github.com/voxpupuli/puppet-rvm",
+  "project_page": "https://github.com/voxpupuli/puppet-rvm",
+  "issues_url": "https://github.com/voxpupuli/puppet-rvm/issues",
   "description": "Installing and using RVM (Ruby Version Manager)",
   "dependencies": [
     {

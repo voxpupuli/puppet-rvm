@@ -1,10 +1,6 @@
 Puppet Module for Ruby Version Manager (RVM)
 ==============================================
 
-[![Build Status](https://travis-ci.org/maestrodev/puppet-rvm.svg?branch=maestrodev)](https://travis-ci.org/maestrodev/puppet-rvm)
-[![Puppet Forge](https://img.shields.io/puppetforge/v/maestrodev/rvm.svg)](https://forge.puppetlabs.com/maestrodev/rvm)
-[![Puppet Forge](https://img.shields.io/puppetforge/f/maestrodev/rvm.svg)](https://forge.puppetlabs.com/maestrodev/rvm)
-
 This module handles installing system RVM (also known as multi-user installation
 as root) and using it to install rubies and gems.  Support for installing and
 configuring passenger is also included.
@@ -19,23 +15,11 @@ Troubleshooting section for more information.
 
 Please read the troubleshooting section below before opening an issue.
 
-
-## System Requirements
-
-Puppet 3.0.0 or higher.
-
-## Upgrading
-
-* 1.12: uses [golja-gnupg](https://forge.puppetlabs.com/golja/gnupg) module
-to manage the installation of the gpg key.
-* 1.5: no longer includes a dependency on puppetlabs/apache, you must install it yourself
-if you want to use the passenger module.
-
 ## Add Puppet Module
 
 Before you begin, you must add the RVM module to your Puppet installation.  This can be done with:
 
-    $ puppet module install maestrodev/rvm
+    $ puppet module install puppet/rvm
 
 You may now continue configuring RVM resources.
 
@@ -243,14 +227,6 @@ Do not surround `include rvm` in the if block, as this is used to install RVM.
 NOTE: $rvm\_installed is evaluated at the beginning of each puppet run.  If you
 use this in your manifests, you will need to run puppet twice to fully
 configure RVM.
-
-### An error "Resource type rvm_gem does not support parameter false" prevents puppet from running.
-
-The RVM module requires Puppet version 2.6.7 or higher.
-
-There is a bug in Puppet versions 2.7.4 through 2.7.9 that also causes this
-error.  The error can be safely ignored in these versions.  For best results,
-upgrade to Puppet 2.7.10.
 
 
 ### Some packages/libraries I don't want or need are installed (e.g. build-essential, libc6-dev, libxml2-dev).
