@@ -1,10 +1,10 @@
 # Install the RVM system
 class rvm::system (
-  $version=undef,
-  $install_from=undef,
-  $proxy_url=undef,
-  $no_proxy=undef,
-  $home=$facts['root_home'],
+  Optional[String[1]] $version = undef,
+  Optional[String[1]] $install_from = undef,
+  Optional[String[1]] $proxy_url = undef,
+  Optional[String[1]] $no_proxy = undef,
+  Stdlib::Absolutepath $home = $facts['root_home'],
   Array[Hash[String[1], String[1]]] $signing_keys = $rvm::params::signing_keys,
 ) inherits rvm::params {
   $actual_version = $version ? {

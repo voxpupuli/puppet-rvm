@@ -13,7 +13,7 @@ describe 'rvm::rvmrc' do
       context 'default parameters', :compile do
         it { is_expected.to contain_file(file).with_group('rvm') }
         it { is_expected.to contain_file(file).with_content(%r{^umask u=rwx,g=rwx,o=rx$}) }
-        it { is_expected.to contain_file(file).with_content(%r{^rvm_autoupdate_flag=0$}) }
+        it { is_expected.to contain_file(file).with_content(%r{^rvm_autoupdate_flag=disabled$}) }
         it { is_expected.not_to contain_file(file).with_content(%r{rvm_max_time_flag}) }
       end
 

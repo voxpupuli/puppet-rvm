@@ -1,16 +1,9 @@
 # Default module parameters
-class rvm::params ($manage_group = true) {
-  $manage_rvmrc = $facts['os']['family'] ? {
-    'Windows' => false,
-    default   => true
-  }
-
-  $group = $facts['os']['name'] ? {
-    default => 'rvm',
-  }
-
-  $proxy_url = undef
-  $no_proxy = undef
+# @api private
+class rvm::params (
+  Boolean $manage_group = true,
+) {
+  $group = 'rvm'
 
   $signing_keys = [
     { 'id' => 'D39DC0E3', 'source' => 'https://rvm.io/mpapis.asc' },
