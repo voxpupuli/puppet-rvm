@@ -1,57 +1,48 @@
 {
-  "name": "maestrodev-rvm",
-  "version": "1.13.2",
-  "author": "maestrodev & Brandon Turner <bt@brandonturner.net>",
+  "name": "puppet-rvm",
+  "version": "2.0.1-rc0",
+  "author": "Vox Pupuli & maestrodev & Brandon Turner <bt@brandonturner.net>",
   "summary": "A puppet module for installing and using RVM (Ruby Version Manager)",
   "license": "BSD-3-Clause",
-  "source": "https://github.com/maestrodev/puppet-rvm",
-  "project_page": "https://github.com/maestrodev/puppet-rvm",
-  "issues_url": "https://github.com/maestrodev/puppet-rvm/issues",
+  "source": "https://github.com/voxpupuli/puppet-rvm",
+  "project_page": "https://github.com/voxpupuli/puppet-rvm",
+  "issues_url": "https://github.com/voxpupuli/puppet-rvm/issues",
   "description": "Installing and using RVM (Ruby Version Manager)",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.2.0"
+      "version_requirement": ">= 4.13.0 < 9.0.0"
     },
     {
       "name": "golja/gnupg",
-      "version_requirement": ">=1.2.0"
+      "version_requirement": ">= 1.2.0 < 2.0.0"
     }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "4",
-        "5",
-        "6",
-        "7"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "4",
-        "5",
-        "6",
-        "7"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "4",
-        "5",
-        "6",
-        "7"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "Scientific",
       "operatingsystemrelease": [
-        "4",
-        "5",
-        "6",
         "7"
       ]
     },
@@ -64,42 +55,15 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "6",
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": [
-        "12.04"
-      ]
-    },
-    {
-      "operatingsystem": "Solaris",
-      "operatingsystemrelease": [
         "10",
         "11"
       ]
     },
     {
-      "operatingsystem": "Windows",
+      "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "Server 2003",
-        "Server 2003 R2",
-        "Server 2008",
-        "Server 2008 R2",
-        "Server 2012",
-        "Server 2012 R2",
-        "7",
-        "8"
-      ]
-    },
-    {
-      "operatingsystem": "AIX",
-      "operatingsystemrelease": [
-        "5.3",
-        "6.1",
-        "7.1"
+        "18.04",
+        "20.04"
       ]
     },
     {
@@ -115,7 +79,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">=3.0.0"
+      "version_requirement": ">= 6.1.0 < 8.0.0"
     }
   ]
 }

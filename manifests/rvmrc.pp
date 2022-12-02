@@ -1,12 +1,12 @@
 # Configure the /etc/rvmrc file
-class rvm::rvmrc(
-  $manage_group = $rvm::params::manage_group,
+class rvm::rvmrc (
+  Boolean $manage_group = $rvm::params::manage_group,
   $template = 'rvm/rvmrc.erb',
-  $umask = 'u=rwx,g=rwx,o=rx',
-  $max_time_flag = undef,
-  $autoupdate_flag = 0,
-  $silence_path_mismatch_check_flag = undef) inherits rvm::params {
-
+  String[0] $umask = 'u=rwx,g=rwx,o=rx',
+  Optional[Integer[0]] $max_time_flag = undef,
+  Enum['disabled', 'warn', 'enabled'] $autoupdate_flag = 'disabled',
+  Optional[Integer[0, 1]] $silence_path_mismatch_check_flag = undef,
+) inherits rvm::params {
   if $manage_group { include rvm::group }
 
   file { '/etc/rvmrc':

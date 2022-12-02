@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.type(:rvm_system_ruby).provide(:rvm) do
   desc 'Ruby RVM support.'
 
@@ -22,16 +24,16 @@ Puppet::Type.type(:rvm_system_ruby).provide(:rvm) do
     rvmcmd('list', 'strings').split("\n").any? do |line|
       line =~ Regexp.new(Regexp.escape(resource[:name]))
     end
-  rescue Puppet::ExecutionFailure => detail
-    raise Puppet::Error, "Could not list RVMs: #{detail}"
+  rescue Puppet::ExecutionFailure => e
+    raise Puppet::Error, "Could not list RVMs: #{e}"
   end
 
   def default_use
     rvmcmd('list', 'default').split("\n").any? do |line|
       line =~ Regexp.new(Regexp.escape(resource[:name]))
     end
-  rescue Puppet::ExecutionFailure => detail
-    raise Puppet::Error, "Could not list default RVM: #{detail}"
+  rescue Puppet::ExecutionFailure => e
+    raise Puppet::Error, "Could not list default RVM: #{e}"
   end
 
   def default_use=(value)
@@ -51,9 +53,7 @@ Puppet::Type.type(:rvm_system_ruby).provide(:rvm) do
       ENV['no_proxy'] = resource[:no_proxy] unless resource[:no_proxy].nil?
     end
     options = Array(resource[:build_opts])
-    if resource[:autolib_mode]
-      options << "--autolibs #{resource[:autolib_mode]}"
-    end
+    options << "--autolibs #{resource[:autolib_mode]}" if resource[:autolib_mode]
     if resource[:proxy_url] && !resource[:proxy_url].empty?
       rvmcmd 'install', resource[:name], '--proxy', resource[:proxy_url], *options
     else

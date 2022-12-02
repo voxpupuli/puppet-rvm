@@ -1,27 +1,18 @@
 # Create a user that belongs to the correct group to have access to RVM
 define rvm::system_user (
-  $create = true,
-  $manage_group = undef) {
-
-  if $facts['os']['family'] == 'Windows' {
-    fail('rvm::system_user is not supported on Windows')
-  }
-  include rvm::params
-
-  $manage_group_real = $manage_group ? {
-    undef   => $rvm::params::manage_group,
-    default => $manage_group
-  }
-
+  Boolean $create = true,
+  Optional[Boolean] $manage_group = undef
+) {
   if $create {
     ensure_resource('user', $name, {
-      'ensure' => 'present',
-      'system' => true,
+        'ensure' => 'present',
+        'system' => true,
     })
     User[$name] -> Exec["rvm-system-user-${name}"]
   }
 
-  if $manage_group_real {
+  include rvm::params
+  if pick($manage_group, $rvm::params::manage_group) {
     include rvm::group
     Group[$rvm::params::group] -> Exec["rvm-system-user-${name}"]
   }

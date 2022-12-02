@@ -1,20 +1,18 @@
 # Install RVM, create system user a install system level rubies
-class rvm(
-  $version=undef,
-  $install_from=undef,
-  $install_rvm=true,
-  $install_dependencies=false,
-  $manage_rvmrc=$rvm::params::manage_rvmrc,
-  $system_users=[],
-  $system_rubies={},
-  $rvm_gems={},
-  $proxy_url=$rvm::params::proxy_url,
-  $no_proxy=$rvm::params::no_proxy,
-  $key_server=$rvm::params::key_server,
-  $gnupg_key_id=$rvm::params::gnupg_key_id) inherits rvm::params {
-
+class rvm (
+  Optional[String[1]] $version = undef,
+  Optional[String[1]] $install_from = undef,
+  Boolean $install_rvm = true,
+  Boolean $install_dependencies = false,
+  Boolean $manage_rvmrc = true,
+  Array[String[1]] $system_users = [],
+  Hash[String[1], Any] $system_rubies = {},
+  Hash[String[1], Any] $rvm_gems = {},
+  Optional[String[1]] $proxy_url = undef,
+  Optional[String[1]] $no_proxy = undef,
+  Array[Hash[String[1], String[1]]] $signing_keys = $rvm::params::signing_keys,
+) inherits rvm::params {
   if $install_rvm {
-
     # rvm has now autolibs enabled by default so let it manage the dependencies
     if $install_dependencies {
       class { 'rvm::dependencies':
@@ -23,23 +21,19 @@ class rvm(
     }
 
     if $manage_rvmrc {
-      ensure_resource('class', 'rvm::rvmrc')
+      include rvm::rvmrc
     }
 
     class { 'rvm::system':
       version      => $version,
       proxy_url    => $proxy_url,
       no_proxy     => $no_proxy,
-      key_server   => $key_server,
-      gnupg_key_id => $gnupg_key_id,
+      signing_keys => $signing_keys,
       install_from => $install_from,
     }
   }
 
-  rvm::system_user{ $system_users: }
-  create_resources('rvm_system_ruby', $system_rubies, {'ensure' => present, 'proxy_url' => $proxy_url, 'no_proxy' => $no_proxy})
-  if $rvm_gems != {} {
-    validate_hash($rvm_gems)
-    create_resources('rvm_gem', $rvm_gems )
-  }
+  rvm::system_user { $system_users: }
+  create_resources('rvm_system_ruby', $system_rubies, { 'ensure' => present, 'proxy_url' => $proxy_url, 'no_proxy' => $no_proxy })
+  create_resources('rvm_gem', $rvm_gems)
 }

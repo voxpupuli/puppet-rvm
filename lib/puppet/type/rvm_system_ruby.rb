@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.newtype(:rvm_system_ruby) do
   @doc = 'Manage RVM Ruby installations.'
 
