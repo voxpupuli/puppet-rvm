@@ -6,6 +6,8 @@ class rvm::system (
   Optional[String[1]] $no_proxy = undef,
   Stdlib::Absolutepath $home = $facts['root_home'],
   Array[Hash[String[1], String[1]]] $signing_keys = $rvm::params::signing_keys,
+  Boolean $include_gnupg = true,
+  Boolean $manage_wget = true,
 ) inherits rvm::params {
   $actual_version = $version ? {
     undef     => 'latest',
@@ -24,21 +26,24 @@ class rvm::system (
   $proxy_environment = concat($http_proxy_environment, $no_proxy_environment)
   $environment = concat($proxy_environment, ["HOME=${home}"])
 
-  unless empty($signing_keys) {
-    include gnupg
-
-    # https keys are downloaded with wget
+  if $manage_wget {
     ensure_packages(['wget'])
-    $signing_keys.each |Hash[String[1], String[1]] $key| {
-      gnupg_key { $key['id']:
-        ensure     => 'present',
-        user       => 'root',
-        key_id     => $key['id'],
-        key_source => $key['source'],
-        key_type   => public,
-        before     => Exec['system-rvm'],
-        require    => Class['gnupg'],
-      }
+  }
+  if $include_gnupg {
+    include gnupg
+    $dep = Class['gnupg']
+  } else {
+    $dep = undef
+  }
+  $signing_keys.each |Hash[String[1], String[1]] $key| {
+    gnupg_key { $key['id']:
+      ensure     => 'present',
+      user       => 'root',
+      key_id     => $key['id'],
+      key_source => $key['source'],
+      key_type   => public,
+      before     => Exec['system-rvm'],
+      require    => $dep,
     }
   }
 
