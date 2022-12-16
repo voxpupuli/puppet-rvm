@@ -24,7 +24,7 @@ class rvm::system (
   $proxy_environment = concat($http_proxy_environment, $no_proxy_environment)
   $environment = concat($proxy_environment, ["HOME=${home}"])
 
-  if $signing_keys {
+  unless empty($signing_keys) {
     include gnupg
 
     # https keys are downloaded with wget
