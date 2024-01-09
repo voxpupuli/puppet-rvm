@@ -27,7 +27,7 @@ class rvm::system (
   $environment = concat($proxy_environment, ["HOME=${home}"])
 
   if $manage_wget {
-    ensure_packages(['wget'])
+    stdlib::ensure_packages(['wget'])
   }
   if $include_gnupg {
     include gnupg
@@ -67,7 +67,7 @@ class rvm::system (
     }
   }
   else {
-    ensure_packages(['curl'])
+    stdlib::ensure_packages(['curl'])
 
     exec { 'system-rvm':
       path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
