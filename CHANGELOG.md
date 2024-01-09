@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.0.0](https://github.com/voxpupuli/puppet-rvm/tree/v3.0.0) (2024-01-09)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-rvm/compare/v2.0.0...v3.0.0)
+
+**Breaking changes:**
+
+- Drop OracleLinux support [\#204](https://github.com/voxpupuli/puppet-rvm/pull/204) ([ekohl](https://github.com/ekohl))
+- Drop Puppet 6 support [\#197](https://github.com/voxpupuli/puppet-rvm/pull/197) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- puppetlabs/stdlib: Allow 9.x [\#199](https://github.com/voxpupuli/puppet-rvm/pull/199) ([bastelfreak](https://github.com/bastelfreak))
+- make gnupg class/wget package optional [\#193](https://github.com/voxpupuli/puppet-rvm/pull/193) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- Fix broken logic for gpg keys [\#192](https://github.com/voxpupuli/puppet-rvm/pull/192) ([bastelfreak](https://github.com/bastelfreak))
+- Deal with -next part in RVM versions [\#191](https://github.com/voxpupuli/puppet-rvm/pull/191) ([jplindquist](https://github.com/jplindquist))
+
+**Merged pull requests:**
+
+- Remove legacy top-scope syntax in README [\#203](https://github.com/voxpupuli/puppet-rvm/pull/203) ([smortex](https://github.com/smortex))
+
 ## [v2.0.0](https://github.com/voxpupuli/puppet-rvm/tree/v2.0.0) (2022-07-07)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-rvm/compare/v1.13.1...v2.0.0)
