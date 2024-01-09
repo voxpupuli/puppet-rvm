@@ -26,7 +26,7 @@ You may now continue configuring RVM resources.
 
 ## Install RVM with Puppet
 
-    class { '::rvm': }
+    class { 'rvm': }
 
 This will install RVM into `/usr/local/rvm`.
 
@@ -40,7 +40,7 @@ This module will install the key if `gpg` is already installed or being installe
 
 If you don't want this module to manage any signing keys, set the `signing_keys` parameter to `[]`
 
-    class { '::rvm': signing_keys => [] }
+    class { 'rvm': signing_keys => [] }
 
 ## Installing Ruby
 
