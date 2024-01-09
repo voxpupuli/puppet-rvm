@@ -9,7 +9,7 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
 
   has_feature :versionable
   has_command(:rvmcmd, '/usr/local/rvm/bin/rvm') do
-    environment HOME: ENV['HOME']
+    environment HOME: ENV.fetch('HOME', nil)
   end
 
   def ruby_version
