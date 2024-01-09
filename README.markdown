@@ -160,9 +160,9 @@ and using:
     class { 'rvm::passenger::apache':
         version            => '3.0.11',
         ruby_version       => 'ruby-1.9.3-p448',
-        mininstances       => '3',
-        maxinstancesperapp => '0',
-        maxpoolsize        => '30',
+        mininstances       => 3,
+        maxinstancesperapp => 0,
+        maxpoolsize        => 30,
         spawnmethod        => 'smart-lv2',
     }
 
