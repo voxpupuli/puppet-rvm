@@ -214,9 +214,9 @@ describe 'rvm' do
         class { 'rvm::passenger::apache':
           version            => '#{passenger_version}',
           ruby_version       => '#{ruby27_version}',
-          mininstances       => '3',
-          maxinstancesperapp => '0',
-          maxpoolsize        => '30',
+          mininstances       => 3,
+          maxinstancesperapp => 0,
+          maxpoolsize        => 30,
           spawnmethod        => 'smart-lv2',
         }
         /* a simple ruby rack 'hello world' app */
@@ -234,7 +234,7 @@ describe 'rvm' do
           require => File['/var/www/passenger'] ,
         }
         apache::vhost { '#{passenger_domain}':
-          port    => '80',
+          port    => 80,
           docroot => '/var/www/passenger/public',
           docroot_group => '#{rackapp_group}' ,
           docroot_owner => '#{rackapp_user}' ,
