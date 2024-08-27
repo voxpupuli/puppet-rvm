@@ -7,6 +7,7 @@ class rvm::system (
   Stdlib::Absolutepath $home = $facts['root_home'],
   Array[Hash[String[1], String[1]]] $signing_keys = $rvm::params::signing_keys,
   Boolean $include_gnupg = true,
+  Boolean $manage_curl = true,
   Boolean $manage_wget = true,
 ) inherits rvm::params {
   $actual_version = $version ? {
@@ -67,14 +68,20 @@ class rvm::system (
     }
   }
   else {
-    stdlib::ensure_packages(['curl'])
+    $inst_dep = if $manage_curl {
+      stdlib::ensure_packages(['curl'])
+      Package['curl']
+    }
+    else {
+      undef
+    }
 
     exec { 'system-rvm':
       path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
       command     => "curl -fsSL https://get.rvm.io | bash -s -- --version ${actual_version}",
       creates     => '/usr/local/rvm/bin/rvm',
       environment => $environment,
-      require     => Package['curl'],
+      require     => $inst_dep,
     }
   }
 

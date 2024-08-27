@@ -12,6 +12,7 @@ class rvm (
   Optional[String[1]] $no_proxy = undef,
   Array[Hash[String[1], String[1]]] $signing_keys = $rvm::params::signing_keys,
   Boolean $include_gnupg = true,
+  Boolean $manage_curl = true,
   Boolean $manage_wget = true,
 ) inherits rvm::params {
   if $install_rvm {
@@ -33,6 +34,7 @@ class rvm (
       signing_keys  => $signing_keys,
       install_from  => $install_from,
       include_gnupg => $include_gnupg,
+      manage_curl   => $manage_curl,
       manage_wget   => $manage_wget,
     }
   }
