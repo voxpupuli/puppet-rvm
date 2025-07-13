@@ -11,7 +11,7 @@ describe 'rvm::dependencies' do
 
       it { is_expected.to compile.with_all_deps }
 
-      case os_facts[:osfamily]
+      case os_facts[:os]['family']
       when 'RedHat'
         it { is_expected.to contain_package('which') }
         it { is_expected.to contain_package('gcc') }

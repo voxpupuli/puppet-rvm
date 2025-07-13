@@ -16,7 +16,7 @@ describe 'rvm::system_user' do
       it { is_expected.to contain_user(username) }
       it { is_expected.to contain_group(group) }
 
-      case os_facts[:osfamily]
+      case os_facts[:os]['family']
       when 'FreeBSD'
         it { is_expected.to contain_exec("rvm-system-user-#{username}").with_command("/usr/sbin/pw groupmod #{group} -m #{username}") }
       when 'Darwin'
