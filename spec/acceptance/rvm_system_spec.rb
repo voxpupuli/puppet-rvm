@@ -5,9 +5,9 @@ require 'spec_helper_acceptance'
 # rubocop:disable RSpec/MultipleMemoizedHelpers
 describe 'rvm' do
   # host variables
-  let(:osfamily) { fact('osfamily') }
-  let(:osname) { fact('operatingsystem') }
-  let(:osversion) { fact('operatingsystemrelease') }
+  let(:osfamily) { fact('os.family') }
+  let(:osname) { fact('os.name') }
+  let(:osversion) { fact('os.release.major') }
 
   # rvm config
   let(:rvm_path) { '/usr/local/rvm/' }
@@ -70,7 +70,7 @@ describe 'rvm' do
   # baseline manifest
   let(:manifest) do
     <<-EOS
-      if $::osfamily == 'RedHat' {
+      if $facts['os']['familiy'] == 'RedHat' {
         class { 'epel':
           before => Class['rvm'],
         }
