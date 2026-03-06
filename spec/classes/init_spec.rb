@@ -15,7 +15,7 @@ describe 'rvm' do
       context 'with install_rvm false', :compile do
         let(:params) do
           {
-            install_rvm: false
+            install_rvm: false,
           }
         end
 
@@ -28,10 +28,10 @@ describe 'rvm' do
           {
             system_rubies: {
               'ruby-1.9' => {
-                'default_use' => true
+                'default_use' => true,
               },
-              'ruby-2.0' => {}
-            }
+              'ruby-2.0' => {},
+            },
           }
         end
 

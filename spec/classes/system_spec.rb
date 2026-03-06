@@ -9,8 +9,8 @@ describe 'rvm::system' do
       rvm_version: '1.10.0',
       root_home: '/root',
       os: {
-        family: 'Debian'
-      }
+        family: 'Debian',
+      },
     }
   end
 
