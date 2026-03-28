@@ -35,7 +35,7 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
                end
 
     if (name = hash[:justme])
-      command << ("^#{name}$")
+      command << "^#{name}$"
     end
 
     # use proxy if proxy_url is set
@@ -69,7 +69,7 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
       version = Regexp.last_match(2).split(%r{,\s*})
       {
         name: name,
-        ensure: version
+        ensure: version,
       }
     else
       Puppet.warning "Could not match #{desc}"

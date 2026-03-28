@@ -8,7 +8,7 @@ describe 'rvm_wrapper' do
     {
       target_ruby: 'ruby-1.9.3-p448',
       prefix: 'bootup',
-      ensure: 'present'
+      ensure: 'present',
     }
   end
 

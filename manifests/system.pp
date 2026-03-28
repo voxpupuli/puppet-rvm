@@ -56,6 +56,7 @@ class rvm::system (
       path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
       command => "tar --strip-components=1 -xzf ${install_from}",
       cwd     => '/tmp/rvm',
+      creates => '/tmp/rvm/install',
     }
 
     exec { 'system-rvm':
@@ -89,7 +90,7 @@ class rvm::system (
       notify { 'rvm-get_version':
         message => "RVM updating from version ${facts['rvm_version']} to ${version}",
       }
-      -> exec { 'system-rvm-get':
+      -> exec { 'system-rvm-get': # lint:ignore:exec_idempotency
         path        => '/usr/local/rvm/bin:/usr/bin:/usr/sbin:/bin',
         command     => "rvm get ${version}",
         before      => Exec['system-rvm'], # so it doesn't run after being installed the first time
