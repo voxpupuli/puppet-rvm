@@ -1,4 +1,5 @@
+---
 fixtures:
   repositories:
-    stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
     gnupg: https://github.com/dgolja/golja-gnupg.git
+    stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
