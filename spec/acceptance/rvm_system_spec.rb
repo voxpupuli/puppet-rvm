@@ -15,21 +15,21 @@ describe 'rvm' do
   # list of currently supported interpreters
   # https://github.com/rvm/rvm/blob/master/config/known
 
-  # ruby 2.7 config
-  let(:ruby27_version) { 'ruby-2.7.0' } # chosen for RVM binary support across nodesets
-  let(:ruby27_environment) { "#{rvm_path}environments/#{ruby27_version}" }
-  let(:ruby27_bin) { "#{rvm_path}rubies/#{ruby27_version}/bin/" }
-  let(:ruby27_gems) { "#{rvm_path}gems/#{ruby27_version}/gems/" }
-  let(:ruby27_gemset) { 'myproject' }
-  let(:ruby27_and_gemset) { "#{ruby27_version}@#{ruby27_gemset}" }
+  # ruby 3.3 config
+  let(:ruby33_version) { 'ruby-3.3.11' } # chosen for RVM binary support across nodesets
+  let(:ruby33_environment) { "#{rvm_path}environments/#{ruby33_version}" }
+  let(:ruby33_bin) { "#{rvm_path}rubies/#{ruby33_version}/bin/" }
+  let(:ruby33_gems) { "#{rvm_path}gems/#{ruby33_version}/gems/" }
+  let(:ruby33_gemset) { 'myproject' }
+  let(:ruby33_and_gemset) { "#{ruby33_version}@#{ruby33_gemset}" }
 
   # ruby 2.6 config
-  let(:ruby26_version) { 'ruby-2.6.5' } # chosen for RVM binary support across nodesets
-  let(:ruby26_environment) { "#{rvm_path}environments/#{ruby26_version}" }
-  let(:ruby26_bin) { "#{rvm_path}rubies/#{ruby26_version}/bin/" }
-  let(:ruby26_gems) { "#{rvm_path}gems/#{ruby26_version}/gems/" }
-  let(:ruby26_gemset) { 'myproject' }
-  let(:ruby26_and_gemset) { "#{ruby26_version}@#{ruby26_gemset}" }
+  let(:ruby32_version) { 'ruby-3.2.11' } # chosen for RVM binary support across nodesets
+  let(:ruby32_environment) { "#{rvm_path}environments/#{ruby32_version}" }
+  let(:ruby32_bin) { "#{rvm_path}rubies/#{ruby32_version}/bin/" }
+  let(:ruby32_gems) { "#{rvm_path}gems/#{ruby32_version}/gems/" }
+  let(:ruby32_gemset) { 'myproject' }
+  let(:ruby32_and_gemset) { "#{ruby32_version}@#{ruby32_gemset}" }
 
   # passenger baseline configuration
   let(:service_name) do
@@ -95,10 +95,10 @@ describe 'rvm' do
     let(:manifest) do
       super() + <<-EOS
         rvm_system_ruby {
-          '#{ruby27_version}':
+          '#{ruby33_version}':
             ensure      => 'present',
             default_use => false;
-          '#{ruby26_version}':
+          '#{ruby32_version}':
             ensure      => 'present',
             default_use => false;
         }
@@ -112,7 +112,7 @@ describe 'rvm' do
 
     it 'reflects installed rubies' do
       shell('/usr/local/rvm/bin/rvm list') do |r|
-        expect(r.stdout).to include(ruby27_version).and include(ruby26_version)
+        expect(r.stdout).to include(ruby33_version).and include(ruby32_version)
         expect(r.exit_code).to be_zero
       end
     end
@@ -124,24 +124,24 @@ describe 'rvm' do
       let(:gemset_manifest) do
         manifest + <<-EOS
           rvm_gemset {
-            '#{ruby27_and_gemset}':
+            '#{ruby33_and_gemset}':
               ensure  => present,
-              require => Rvm_system_ruby['#{ruby27_version}'];
+              require => Rvm_system_ruby['#{ruby33_version}'];
           }
           rvm_gem {
-            '#{ruby27_and_gemset}/#{gem_name}':
+            '#{ruby33_and_gemset}/#{gem_name}':
               ensure  => '#{gem_version}',
-              require => Rvm_gemset['#{ruby27_and_gemset}'];
+              require => Rvm_gemset['#{ruby33_and_gemset}'];
           }
           rvm_gemset {
-            '#{ruby26_and_gemset}':
+            '#{ruby32_and_gemset}':
               ensure  => present,
-              require => Rvm_system_ruby['#{ruby26_version}'];
+              require => Rvm_system_ruby['#{ruby32_version}'];
           }
           rvm_gem {
-            '#{ruby26_and_gemset}/#{gem_name}':
+            '#{ruby32_and_gemset}/#{gem_name}':
               ensure  => '#{gem_version}',
-              require => Rvm_gemset['#{ruby26_and_gemset}'];
+              require => Rvm_gemset['#{ruby32_and_gemset}'];
           }
         EOS
       end
@@ -152,13 +152,13 @@ describe 'rvm' do
       end
 
       it 'reflects installed gems and gemsets' do
-        shell("/usr/local/rvm/bin/rvm #{ruby27_version} gemset list") do |r|
-          expect(r.stdout).to include("\n=> (default)").and include("\n   global").and include("\n   #{ruby27_gemset}")
+        shell("/usr/local/rvm/bin/rvm #{ruby33_version} gemset list") do |r|
+          expect(r.stdout).to include("\n=> (default)").and include("\n   global").and include("\n   #{ruby33_gemset}")
           expect(r.exit_code).to be_zero
         end
 
-        shell("/usr/local/rvm/bin/rvm #{ruby26_version} gemset list") do |r|
-          expect(r.stdout).to include("\n=> (default)").and include("\n   global").and include("\n   #{ruby26_gemset}")
+        shell("/usr/local/rvm/bin/rvm #{ruby32_version} gemset list") do |r|
+          expect(r.stdout).to include("\n=> (default)").and include("\n   global").and include("\n   #{ruby32_gemset}")
           expect(r.exit_code).to be_zero
         end
       end
@@ -196,15 +196,15 @@ describe 'rvm' do
     let(:passenger_version) { '6.0.9' }
     let(:passenger_domain) { 'passenger3.example.com' }
 
-    let(:passenger_ruby) { "#{rvm_path}wrappers/#{ruby27_version}/ruby" }
-    let(:passenger_root) { "#{ruby27_gems}passenger-#{passenger_version}" }
+    let(:passenger_ruby) { "#{rvm_path}wrappers/#{ruby33_version}/ruby" }
+    let(:passenger_root) { "#{ruby33_gems}passenger-#{passenger_version}" }
     # particular to 3.0.x (may or may not also work with 2.x?)
     let(:passenger_module_path) { "#{passenger_root}/ext/apache2/mod_passenger.so" }
 
     let(:manifest) do
       super() + <<-EOS
         rvm_system_ruby {
-          '#{ruby27_version}':
+          '#{ruby33_version}':
             ensure      => 'present',
             default_use => false,
         }
@@ -213,7 +213,7 @@ describe 'rvm' do
         }
         class { 'rvm::passenger::apache':
           version            => '#{passenger_version}',
-          ruby_version       => '#{ruby27_version}',
+          ruby_version       => '#{ruby33_version}',
           mininstances       => 3,
           maxinstancesperapp => 0,
           maxpoolsize        => 30,
@@ -250,7 +250,7 @@ describe 'rvm' do
       apply_manifest(manifest, catch_failures: true)
       apply_manifest(manifest, catch_changes: true)
 
-      expect(shell("/usr/local/rvm/bin/rvm #{ruby27_version} do #{ruby27_bin}gem list passenger | grep \"passenger (#{passenger_version})\"").exit_code).to be_zero
+      expect(shell("/usr/local/rvm/bin/rvm #{ruby33_version} do #{ruby33_bin}gem list passenger | grep \"passenger (#{passenger_version})\"").exit_code).to be_zero
     end
 
     it 'is running' do
@@ -268,7 +268,7 @@ describe 'rvm' do
 
     # this works only on legacy passenger, which we only have on CentOS 7
     it 'outputs status via passenger-status', if: fact('operatingsystemrelease').to_i == 7 do
-      shell("rvmsudo_secure_path=1 /usr/local/rvm/bin/rvm #{ruby27_version} do passenger-status") do |r|
+      shell("rvmsudo_secure_path=1 /usr/local/rvm/bin/rvm #{ruby33_version} do passenger-status") do |r|
         expect(r.stdout).to include('General information')
         expect(r.exit_code).to be_zero
       end
