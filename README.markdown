@@ -36,7 +36,7 @@ To use RVM without sudo, users need to be added to the `rvm` group.  This can be
 
 If GPG is installed, installing RVM requires the RVM GPG key.
 This module will install the key if `gpg` is already installed or being installed with the
-[`golja-gnupg`](https://forge.puppetlabs.com/golja/gnupg) module.
+[h0tw1r3-gnupg](https://forge.puppetlabs.com/h0tw1r3/gnupg) module.
 
 If you don't want this module to manage any signing keys, set the `signing_keys` parameter to `[]`
 
