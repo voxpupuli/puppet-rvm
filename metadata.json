@@ -11,7 +11,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.13.0 < 10.0.0"
+      "version_requirement": ">= 4.13.0 < 11.0.0"
     },
     {
       "name": "h0tw1r3/gnupg",
