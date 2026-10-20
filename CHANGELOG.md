@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.0.0](https://github.com/voxpupuli/puppet-rvm/tree/v4.0.0) (2026-10-20)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-rvm/compare/v3.0.0...v4.0.0)
+
+**Breaking changes:**
+
+- Drop EoL EL7 support [\#232](https://github.com/voxpupuli/puppet-rvm/pull/232) ([bastelfreak](https://github.com/bastelfreak))
+- Drop EoL Ubuntu 18.04/20.04 support [\#231](https://github.com/voxpupuli/puppet-rvm/pull/231) ([bastelfreak](https://github.com/bastelfreak))
+- Drop EoL Debian 10/11 support [\#230](https://github.com/voxpupuli/puppet-rvm/pull/230) ([bastelfreak](https://github.com/bastelfreak))
+- Switch from golja/gnupg-\>h0tw1r3/gnupg [\#220](https://github.com/voxpupuli/puppet-rvm/pull/220) ([bastelfreak](https://github.com/bastelfreak))
+- Drop puppet, update openvox minimum version to 8.19 [\#217](https://github.com/voxpupuli/puppet-rvm/pull/217) ([TheMeier](https://github.com/TheMeier))
+
+**Implemented enhancements:**
+
+- Add Debian 13 support [\#228](https://github.com/voxpupuli/puppet-rvm/pull/228) ([bastelfreak](https://github.com/bastelfreak))
+- Add Ubuntu 26.04 support [\#227](https://github.com/voxpupuli/puppet-rvm/pull/227) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: Allow 10.x [\#226](https://github.com/voxpupuli/puppet-rvm/pull/226) ([bastelfreak](https://github.com/bastelfreak))
+- Update requirements to allow OpenVox 9 [\#225](https://github.com/voxpupuli/puppet-rvm/pull/225) ([sebastianrakel](https://github.com/sebastianrakel))
+- Add Ubuntu 22.04/24.04 support [\#221](https://github.com/voxpupuli/puppet-rvm/pull/221) ([bastelfreak](https://github.com/bastelfreak))
+- Add support for Debian 12 [\#218](https://github.com/voxpupuli/puppet-rvm/pull/218) ([smortex](https://github.com/smortex))
+- metadata.json: Add OpenVox [\#215](https://github.com/voxpupuli/puppet-rvm/pull/215) ([jstraw](https://github.com/jstraw))
+
+**Merged pull requests:**
+
+- fix exec idempotency issues [\#219](https://github.com/voxpupuli/puppet-rvm/pull/219) ([pccibot](https://github.com/pccibot))
+
 ## [v3.0.0](https://github.com/voxpupuli/puppet-rvm/tree/v3.0.0) (2024-01-09)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-rvm/compare/v2.0.0...v3.0.0)
@@ -49,7 +75,6 @@ These should not affect the functionality of the module.
 
 - Properly ensure curl is present when needed [\#181](https://github.com/voxpupuli/puppet-rvm/pull/181) ([ekohl](https://github.com/ekohl))
 - puppetlabs/stdlib: Allow 7.x/8.x [\#170](https://github.com/voxpupuli/puppet-rvm/pull/170) ([bastelfreak](https://github.com/bastelfreak))
-- Allow rvm to mount a Ruby [\#110](https://github.com/voxpupuli/puppet-rvm/pull/110) ([paulccarey](https://github.com/paulccarey))
 
 **Fixed bugs:**
 
@@ -144,7 +169,7 @@ These should not affect the functionality of the module.
 **Merged pull requests:**
 
 - Install gems using Hiera [\#87](https://github.com/voxpupuli/puppet-rvm/pull/87) ([tiengo](https://github.com/tiengo))
-- Added option to specify the key\_server [\#85](https://github.com/voxpupuli/puppet-rvm/pull/85) ([ajcrowe](https://github.com/ajcrowe))
+- Added option to specify the key\_server [\#85](https://github.com/voxpupuli/puppet-rvm/pull/85) ([ajcurated](https://github.com/ajcurated))
 
 ## [v1.10.2](https://github.com/voxpupuli/puppet-rvm/tree/v1.10.2) (2015-03-09)
 
@@ -320,10 +345,6 @@ These should not affect the functionality of the module.
 **Closed issues:**
 
 - 1.5.6 is not on the forge [\#38](https://github.com/voxpupuli/puppet-rvm/issues/38)
-
-**Merged pull requests:**
-
-- only install curl if it isn't defined elsewhere [\#39](https://github.com/voxpupuli/puppet-rvm/pull/39) ([ghost](https://github.com/ghost))
 
 ## [v1.5.5](https://github.com/voxpupuli/puppet-rvm/tree/v1.5.5) (2014-04-30)
 
